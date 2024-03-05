@@ -17,7 +17,4 @@ class Map:
         with open('resources/map.txt', 'r') as map_as_txt:
             for line in map_as_txt:
                 grid.append([Tile(char) for char in line if char != '\n'])
-        return grid
-
-    def __getitem__(self, ) -> Tile:
-        pass
+        return grid       
