@@ -8,9 +8,9 @@ class PositionCoordinate:
     grippoint to another."""
 
     def __init__(self, absolute: int, relative: int, norm: int) -> None:
+        self.norm: int = norm
         self.absolute: int = absolute
         self.relative: int = relative
-        self.norm: int = norm
 
     @property
     def absolute(self) -> int:
