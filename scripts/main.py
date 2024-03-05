@@ -10,11 +10,16 @@ def main() -> None:
 
     #pygame setup
     width = settings['screen_width']
-    game_height = round(31 * width / 28)
-    screen = pygame.display.set_mode((width, game_height))
+    tile_size = width / 28
+    screen_size = (width, round(31 * tile_size))
+    screen = pygame.display.set_mode(screen_size)
     pygame.display.set_caption("PacMan")
     clock = pygame.time.Clock()
     running = True
+
+    #initialise the background
+    bg = pygame.image.load('resources/background.png')
+    bg = pygame.transform.scale(bg, screen_size)
 
     map = Map()
     pacman = PacMan(map)
@@ -40,20 +45,18 @@ def main() -> None:
                 elif event.key == pygame.K_LEFT:
                     move = Direction.LEFT
 
-        screen.fill('black')
-
-        for i, line in enumerate(map.grid):
-            for j, tile in enumerate(line):
-                if tile == Tile.WALL:
-                    pixel_point = to_pixels((j,i), (width, game_height))
-                    pygame.draw.rect(screen, 'blue', pygame.Rect(pixel_point, (width / 28, game_height / 31)))
-
+        
+        #wipe the last frame
+        screen.blit(bg, (0,0))
 
         pacman.move(move)
-        pygame.draw.rect(screen, 'yellow', pygame.Rect(to_pixels(pacman.position, (width, game_height)), (width / 28, game_height / 31)))
+
+        pacman_position = to_pixels(pacman.position, tile_size)
+        pacman_center = (pacman_position[0] + tile_size/2, pacman_position[1] + tile_size/2)
+        pygame.draw.circle(screen, 'yellow', pacman_center, tile_size*0.6)
         
         #display the changes
         pygame.display.flip()
-        clock.tick(10)
+        clock.tick(40)
 
     pygame.quit()
