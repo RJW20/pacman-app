@@ -7,3 +7,4 @@ class Tile(Enum):
     WALL = '|'
     PATH = '.'
     BLANK = '_'
+    NODE = 'o'
