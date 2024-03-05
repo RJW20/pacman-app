@@ -2,11 +2,15 @@ from __future__ import annotations
 
 
 class PositionCoordinate:
-    """An x or y cooridinate for a character."""
+    """An x or y coordinate for a character.
+    
+    We assign a norm that tells us how many frames it takes to move from one
+    grippoint to another."""
 
-    def __init__(self, absolute: int, relative: int) -> None:
+    def __init__(self, absolute: int, relative: int, norm: int) -> None:
         self.absolute: int = absolute
         self.relative: int = relative
+        self.norm: int = norm
 
     @property
     def absolute(self) -> int:
@@ -20,25 +24,25 @@ class PositionCoordinate:
 
     @property
     def relative(self) -> int:
-        """Offset from the centre of a tile (values in [0,3])"""
+        """Offset from the centre of a tile (values in [0,self.norm-1])"""
 
         return self._relative
 
     @relative.setter
     def relative(self, value: int) -> None:
-        """Ensure stays in range [0,3] and automatically update absolute."""
+        """Ensure stays in range [0,self.norm-1] and automatically update absolute."""
 
-        self._relative = value % 4
-        self._absolute += value // 4
+        self._relative = value % self.norm
+        self._absolute += value // self.norm
 
     def __add__(self, value: int) -> PositionCoordinate:
         """Add value to self.relative (keeping it in it's range). absolute 
         will be automatically updated if neccessary."""
 
         relative = self.relative + value
-        absolute = self.absolute + relative // 4
-        relative = relative % 4
-        return PositionCoordinate(absolute, relative)
+        absolute = self.absolute + relative // self.norm
+        relative = relative % self.norm
+        return PositionCoordinate(absolute, relative, self.norm)
 
     def __str__(self) -> str:
         return f'({self.absolute}: {self.relative})'

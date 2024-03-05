@@ -14,7 +14,7 @@ class PacMan:
         """Get self in a state to start the game."""
 
         self.score = 0
-        self.position = CharacterPosition((13, 23), (2,0))
+        self.position = CharacterPosition((13, 23), (4,0), 8)
         self.direction = Direction.LEFT
 
     def can_move_in_direction(self, direction: Direction) -> bool:
@@ -33,7 +33,7 @@ class PacMan:
                 return False
             
         #check if the tile in given direction is wall
-        if self.map[self.position + direction.value * 4] != Tile.WALL:
+        if self.map[self.position + direction.value * 8] != Tile.WALL:
             return True
         
         return False
