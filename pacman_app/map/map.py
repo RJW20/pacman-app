@@ -1,6 +1,7 @@
 from functools import cached_property
 
 from pacman_app.map.tile import Tile
+from pacman_app.map.character_position import CharacterPosition
 
 
 class Map:
@@ -17,4 +18,14 @@ class Map:
         with open('resources/map.txt', 'r') as map_as_txt:
             for line in map_as_txt:
                 grid.append([Tile(char) for char in line if char != '\n'])
-        return grid       
+        return grid
+    
+    def __getitem__(self, index: CharacterPosition | tuple[int, int]):
+        """Return the tile at the given index.
+        
+        If index is a CharacterPosition then will return the tile at the absolute x, y values."""
+
+        if isinstance(index, CharacterPosition):
+            index = (index.x.absolute, index.y.absolute)
+
+        return self.grid[index[1]][index[0]]

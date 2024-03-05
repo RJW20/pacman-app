@@ -1,12 +1,11 @@
-from typing import Literal
-
-from pacman_app.map import CharacterPosition, Direction
+from pacman_app.map import Map, Tile, CharacterPosition, Direction
 
 
 class PacMan:
     """The playable character."""
 
-    def __init__(self) -> None:
+    def __init__(self, map: Map) -> None:
+        self.map: Map = map
         self.position: CharacterPosition
         self.direction: Direction
         self.score: int
@@ -18,17 +17,33 @@ class PacMan:
         self.position = CharacterPosition((13, 23), (2,0))
         self.direction = Direction.LEFT
 
-    def move(self, move: Literal['up', 'right', 'down', 'left']) -> None:
+    def can_move_in_direction(self, direction: Direction) -> bool:
+        """Return True if moving in the given direction is a valid move."""
 
-        match(move):
-            case 'up':
-                self.direction = Direction.UP
-            case 'right':
-                self.direction = Direction.RIGHT
-            case 'down':
-                self.direction = Direction.DOWN
-            case 'left':
-                self.direction = Direction.LEFT
+        #if transitioning between two tiles
+        if direction == Direction.RIGHT or direction == Direction.LEFT:
+            if self.position.x.relative != 0:
+                return True
+            elif self.position.y.relative != 0:
+                return False
+        else:
+            if self.position.y.relative != 0:
+                return True
+            elif self.position.x.relative != 0:
+                return False
+            
+        #check if the tile in given direction is wall
+        if self.map[self.position + direction.value * 4] != Tile.WALL:
+            return True
+        
+        return False
 
+    def move(self, move: Direction) -> None:
+        """Move PacMan in the given direction if possible, otherwise continue."""
 
-        self.position += self.direction
+        if self.can_move_in_direction(move):
+            self.direction = move
+            self.position += self.direction.value
+        else:
+            if move != self.direction:
+                self.position += self.direction.value

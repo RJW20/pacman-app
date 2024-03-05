@@ -10,6 +10,9 @@ class Vector:
     d_x: int
     d_y: int
 
+    def __mul__(self, other: int) -> Vector:
+        return Vector(self.d_x * other, self.d_y * other)
+
 
 class Direction(Enum):
     """Possible directions for pacman to travel in."""
