@@ -8,7 +8,7 @@ class CharacterPosition:
     """A pair of x, y values representing the position of a character."""
 
     def __init__(self, position: tuple[int,int], offset: tuple[int,int], norm: int) -> None:
-        self.x: PositionCoordinate = PositionCoordinate(position[0], offset[0], norm)
+        self.x: PositionCoordinate = PositionCoordinate(position[0], offset[0], norm, loop=True)
         self.y: PositionCoordinate = PositionCoordinate(position[1], offset[1], norm)
         self.norm: int = norm
 
