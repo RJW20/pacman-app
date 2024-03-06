@@ -10,8 +10,9 @@ class PositionCoordinate:
 
     def __init__(self, absolute: int, relative: int, norm: int, loop: bool = False, max: int = 28) -> None:
         self.norm: int = norm
-        self.loop = loop
-        self.max = max
+        self.translation: int = self.norm - self.norm//2 - 1
+        self.loop: bool = loop
+        self.max: int = max
         self.absolute: int = absolute
         self.relative: int = relative
 
@@ -35,21 +36,22 @@ class PositionCoordinate:
     def relative(self, value: int) -> None:
         """Ensure stays in range [0,self.norm-1] and automatically update absolute."""
 
-        self._relative = value % self.norm
-        self._absolute = self._absolute + value // self.norm
+        self._relative = (value + self.translation) % self.norm - self.translation
+        self._absolute = self._absolute + (value + self.translation) // self.norm
         if self.loop:
             self._absolute = self._absolute % self.max
 
     def __add__(self, value: int) -> PositionCoordinate:
         """Add value to self.relative (keeping it in it's range). absolute 
-        will be automatically updated if neccessary."""
+        will be automatically updated if neccessary.
+        """
 
-        relative = self.relative + value
+        relative = self.relative + value + self.translation
         absolute = self.absolute + relative // self.norm
         if self.loop:
             absolute = absolute % self.max
-        relative = relative % self.norm
-        return PositionCoordinate(absolute, relative, self.norm)
+        relative = relative % self.norm - self.translation
+        return PositionCoordinate(absolute, relative, self.norm, self.loop)
 
     def __str__(self) -> str:
         return f'({self.absolute}: {self.relative})'
