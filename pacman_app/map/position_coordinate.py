@@ -33,7 +33,7 @@ class PositionCoordinate:
         """Ensure stays in range [0,self.norm-1] and automatically update absolute."""
 
         self._relative = value % self.norm
-        self._absolute += value // self.norm
+        self._absolute = self._absolute + value // self.norm
 
     def __add__(self, value: int) -> PositionCoordinate:
         """Add value to self.relative (keeping it in it's range). absolute 
