@@ -1,8 +1,7 @@
 import pygame
 
 from pacman_app.map import Map, Tile, Direction
-from pacman_app.pacman import PacMan
-from pacman_app.drawer import to_pixels
+from pacman_app import PacMan, PacDots, to_pixels
 from settings import settings
 
 
@@ -26,6 +25,7 @@ def main() -> None:
 
     map = Map()
     pacman = PacMan(map)
+    pacdots = PacDots(map)
     pacman.initialise()
     move = pacman.direction
 
@@ -54,13 +54,19 @@ def main() -> None:
         game.fill('black')
         #game.blit(bg, (0,0))
 
-        for i, line in enumerate(map.grid):
-            for j, tile in enumerate(line):
+        for j, line in enumerate(map.grid):
+            for i, tile in enumerate(line):
                 if tile == Tile.WALL:
-                    pixel_point = to_pixels((j,i), tile_size)
+                    pixel_point = to_pixels((i,j), tile_size)
                     pygame.draw.rect(game, 'blue', pygame.Rect(pixel_point, (tile_size, tile_size)), 1)
 
         pacman.move(move)
+
+        if pacdots.check_if_eaten(pacman):
+            pacman.score += 10
+
+        for dot in pacdots:
+            pygame.draw.rect(game, 'pink', pygame.Rect(to_pixels(dot, tile_size), (tile_size/2, tile_size/2)))
 
         pacman_position = to_pixels(pacman.position, tile_size)
         pacman_center = (pacman_position[0] + (tile_size+1)/2, pacman_position[1] + (tile_size+1)/2)
