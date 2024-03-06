@@ -45,5 +45,5 @@ class PacMan:
             self.direction = move
             self.position += self.direction.value
         else:
-            if move != self.direction:
+            if move != self.direction and self.can_move_in_direction(self.direction):
                 self.position += self.direction.value
