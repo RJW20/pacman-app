@@ -2,6 +2,6 @@
 
 settings = {
 
-    'screen_width': 560
+    'game_width': 540
 
 }
