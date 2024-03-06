@@ -1,4 +1,4 @@
-from pacman_app.map import Map, Tile, CharacterPosition, Direction
+from pacman_app.map import Map, Tile, Position, Direction
 
 
 class PacMan:
@@ -6,7 +6,7 @@ class PacMan:
 
     def __init__(self, map: Map) -> None:
         self.map: Map = map
-        self.position: CharacterPosition
+        self.position: Position
         self.direction: Direction
         self.score: int
 
@@ -14,7 +14,7 @@ class PacMan:
         """Get self in a state to start the game."""
 
         self.score = 0
-        self.position = CharacterPosition((13, 23), (4,0), 8)
+        self.position = Position((13, 23), (4, 0), 8)
         self.direction = Direction.LEFT
 
     def can_move_in_direction(self, direction: Direction) -> bool:
@@ -22,14 +22,14 @@ class PacMan:
 
         #if transitioning between two tiles
         if direction == Direction.RIGHT or direction == Direction.LEFT:
-            if self.position.x.relative != 0:
+            if self.position.offset_x != 0:
                 return True
-            elif self.position.y.relative != 0:
+            elif self.position.offset_y != 0:
                 return False
         else:
-            if self.position.y.relative != 0:
+            if self.position.offset_y != 0:
                 return True
-            elif self.position.x.relative != 0:
+            elif self.position.offset_x != 0:
                 return False
             
         #check if the tile in given direction is wall

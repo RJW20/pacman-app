@@ -1,4 +1,4 @@
 from .map import Map
 from .tile import Tile
-from .character_position import CharacterPosition
+from .position import Position
 from .direction import Direction

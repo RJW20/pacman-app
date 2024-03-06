@@ -58,19 +58,20 @@ def main() -> None:
             for i, tile in enumerate(line):
                 if tile == Tile.WALL:
                     pixel_point = to_pixels((i,j), tile_size)
-                    pygame.draw.rect(game, 'blue', pygame.Rect(pixel_point, (tile_size, tile_size)), 1)
+                    tile_rect = pygame.Rect((0,0), (tile_size, tile_size))
+                    tile_rect.center = pixel_point
+                    pygame.draw.rect(game, 'blue', tile_rect, 1)
 
         pacman.move(move)
 
         if pacdots.check_if_eaten(pacman):
             pacman.score += 10
 
-        for dot in pacdots:
-            pygame.draw.rect(game, 'pink', pygame.Rect(to_pixels(dot, tile_size), (tile_size/2, tile_size/2)))
+        #for dot in pacdots:
+            #pygame.draw.circle(game, 'pink', pygame.Rect(to_pixels(dot, tile_size), (tile_size/2, tile_size/2)))
 
         pacman_position = to_pixels(pacman.position, tile_size)
-        pacman_center = (pacman_position[0] + (tile_size+1)/2, pacman_position[1] + (tile_size+1)/2)
-        pygame.draw.circle(game, 'yellow', pacman_center, tile_size*0.7)
+        pygame.draw.circle(game, 'yellow', pacman_position, tile_size*0.7)
         
         #display the changes
         screen.blit(game, (game_offset, game_offset))
