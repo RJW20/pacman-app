@@ -1,5 +1,4 @@
 from __future__ import annotations
-from math import sqrt
 
 from pacman_app.map.direction import Vector
 
@@ -82,6 +81,12 @@ class Position:
         offset_y = (offset_y + self.translator) % self.norm - self.translator
 
         return Position((tile_x, tile_y), (offset_x, offset_y), self.norm)
+    
+    @property
+    def tile_pos(self) -> tuple[int,int]:
+        """Tuple of tile_x, tile_y."""
+
+        return self.tile_x, self.tile_y
 
     @property
     def true_x(self) -> float:
@@ -103,13 +108,3 @@ class Position:
     
     def __str__(self) -> str:
         return f'({self.tile_x}: {self.offset_x}, {self.tile_y}: {self.offset_y})'
-    
-
-def distance_between(pos_1: Position, pos_2: Position) -> float:
-    """Return the straight-line distance between two positions.
-    
-    Note that the straight-line distance between the two positions' tile_pos
-    is what is returned inline with the original game.
-    """
-
-    return sqrt((pos_1.tile_x - pos_2.tile_x) ** 2 + (pos_1.tile_y - pos_2.tile_y) ** 2)

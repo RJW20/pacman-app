@@ -15,7 +15,7 @@ class Ghost:
 
     @property
     def chase_target(self) -> tuple[int,int]:
-        """Return the Ghost's chase target as tile position for use with astar."""
+        """Return the Ghost's chase target as tile coordinate."""
 
     @property
     def scatter_target(self) -> tuple[int,int]:

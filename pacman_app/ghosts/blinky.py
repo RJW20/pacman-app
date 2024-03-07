@@ -7,13 +7,15 @@ class Blinky(Ghost):
 
     @property
     def chase_target(self) -> tuple[int,int]:
-        """Return the Ghost's chase target as tile position for use with astar."""
+        """Return the Ghost's chase target as tile coordinate."""
 
         return self.pacman.position.tile_pos
 
     @property
     def scatter_target(self) -> tuple[int,int]:
         """The Ghost's corner tile it retreats to during scatter mode."""
+
+        return (26, 1)
 
     def initialise(self) -> None:
         """Get in a state to start the game."""

@@ -1,6 +1,7 @@
 from .map import Map
 from .tile import Tile
-from .position import Position, distance_between
+from .position import Position
 from .direction import Direction
+from .geometry import distance_between
 
 MAP = Map()
