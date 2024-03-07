@@ -27,6 +27,6 @@ class Map:
         """
 
         if isinstance(index, Position):
-            index = (index.tile_x, index.tile_y)
+            index = index.tile_pos
 
         return self.grid[index[1]][index[0]]
