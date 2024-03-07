@@ -16,11 +16,16 @@ class Position:
 
     def __init__(self, tile_pos: tuple[int, int], offset: tuple[int,int], norm: int):
         self.norm: int = norm
-        self._translator = norm - norm//2 - 1 #used for keeping in ranges
         self.tile_x: int = tile_pos[0]
         self.tile_y: int = tile_pos[1]
         self.offset_x: int = offset[0]
         self.offset_y: int = offset[1]
+
+    @property
+    def translator(self) -> int:
+        """Used for keeping the offset's in their correct range."""
+
+        return self.norm - self.norm//2 - 1
 
     @property
     def tile_x(self) -> int:
@@ -48,8 +53,8 @@ class Position:
     def offset_x(self, value: int) -> None:
         """Ensure stays in range [0,self.norm-1] and automatically update tile_x."""
 
-        self._offset_x = (value + self._translator) % self.norm - self._translator
-        self._tile_x = (self._tile_x + (value + self._translator) // self.norm) % 28
+        self._offset_x = (value + self.translator) % self.norm - self.translator
+        self._tile_x = (self._tile_x + (value + self.translator) // self.norm) % 28
 
     @property
     def offset_y(self) -> int:
@@ -61,19 +66,19 @@ class Position:
     def offset_y(self, value: int) -> None:
         """Ensure stays in range [0,self.norm-1] and automatically update tile_y."""
 
-        self._offset_y = (value + self._translator) % self.norm - self._translator
-        self._tile_y = self._tile_y + (value + self._translator) // self.norm
+        self._offset_y = (value + self.translator) % self.norm - self.translator
+        self._tile_y = self._tile_y + (value + self.translator) // self.norm
 
     def __add__(self, other: Vector) -> Position:
         """Add to the offset values."""
 
         offset_x = self.offset_x + other.d_x
-        tile_x = (self.tile_x + (offset_x + self._translator) // self.norm) % 28
-        offset_x = (offset_x + self._translator) % self.norm - self._translator
+        tile_x = (self.tile_x + (offset_x + self.translator) // self.norm) % 28
+        offset_x = (offset_x + self.translator) % self.norm - self.translator
 
         offset_y = self.offset_y + other.d_y
-        tile_y = self.tile_y + (offset_y + self._translator) // self.norm
-        offset_y = (offset_y + self._translator) % self.norm - self._translator
+        tile_y = self.tile_y + (offset_y + self.translator) // self.norm
+        offset_y = (offset_y + self.translator) % self.norm - self.translator
 
         return Position((tile_x, tile_y), (offset_x, offset_y), self.norm)
     
