@@ -1,5 +1,5 @@
 from pacman_app.ghosts.ghost import Ghost
-from pacman_app.map import Tile, Position, Direction
+from pacman_app.map import MAP, Tile, Position, Direction
 
 
 class Blinky(Ghost):

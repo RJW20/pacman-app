@@ -1,11 +1,10 @@
-from pacman_app.map import Map, Tile, Position, Direction
+from pacman_app.map import MAP, Tile, Position, Direction
 
 
 class PacMan:
     """The playable character."""
 
-    def __init__(self, map: Map) -> None:
-        self.map: Map = map
+    def __init__(self) -> None:
         self.position: Position
         self.direction: Direction
         self.score: int
@@ -33,7 +32,7 @@ class PacMan:
                 return False
             
         #check if the tile in given direction is wall
-        if self.map[self.position + direction.value * self.position.norm] != Tile.WALL:
+        if MAP[self.position + direction.value * self.position.norm] != Tile.WALL:
             return True
         
         return False

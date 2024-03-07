@@ -23,7 +23,8 @@ class Map:
     def __getitem__(self, index: Position | tuple[int, int]):
         """Return the tile at the given index.
         
-        If index is a CharacterPosition then will return the tile at the absolute x, y values."""
+        If index is a CharacterPosition then will return the tile at the absolute x, y values.
+        """
 
         if isinstance(index, Position):
             index = (index.tile_x, index.tile_y)

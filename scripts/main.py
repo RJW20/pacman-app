@@ -1,6 +1,6 @@
 import pygame
 
-from pacman_app.map import Map, Tile, Direction
+from pacman_app.map import MAP, Tile, Direction
 from pacman_app import PacMan, PacDots, Blinky
 from pacman_app.drawer import to_pixels
 from settings import settings
@@ -24,10 +24,9 @@ def main() -> None:
     #bg = pygame.image.load('resources/background.png')
     #bg = pygame.transform.scale(bg, game_size)
 
-    map = Map()
-    pacman = PacMan(map)
-    pacdots = PacDots(map)
-    blinky = Blinky(map)
+    pacman = PacMan()
+    pacdots = PacDots()
+    blinky = Blinky()
     pacman.initialise()
     blinky.initialise()
     move = pacman.direction
@@ -57,7 +56,7 @@ def main() -> None:
         game.fill('black')
         #game.blit(bg, (0,0))
 
-        for j, line in enumerate(map.grid):
+        for j, line in enumerate(MAP.grid):
             for i, tile in enumerate(line):
                 if tile == Tile.WALL:
                     pixel_point = to_pixels((i,j), tile_size)

@@ -1,17 +1,17 @@
 from math import isclose
 
-from pacman_app.map import Map, Tile
+from pacman_app.map import MAP, Tile
 from pacman_app import PacMan
 
 
 class PacDots:
     """The dots the PacMan eats."""
 
-    def __init__(self, map: Map) -> None:
+    def __init__(self) -> None:
         self.dots: list[tuple[int,int]] = []
-        for j, line in enumerate(map.grid):
+        for j, line in enumerate(MAP.grid):
             for i, tile in enumerate(line):
-                if tile == Tile.PATH:
+                if tile == Tile.PATH or tile == Tile.NODE:
                     self.dots.append((i,j))
 
     def __getitem__(self, index: int) -> tuple[int,int]:
@@ -24,8 +24,8 @@ class PacDots:
         """
 
         for dot in self.dots:
-            if isclose(pacman.position.true_x, dot[0]) and \
-               isclose(pacman.position.true_y, dot[1]):
+            if abs(pacman.position.true_x - dot[0]) < 0.15 and \
+               abs(pacman.position.true_y - dot[1]) < 0.15:
                 self.dots.remove(dot)
                 return True
 
