@@ -14,17 +14,6 @@ class Ghost:
         self.chase_scatter_count: int
 
     @property
-    def chase_target(self) -> tuple[int,int]:
-        """Return the Ghost's chase target as tile coordinate."""
-
-    @property
-    def scatter_target(self) -> tuple[int,int]:
-        """The Ghost's corner tile it retreats to during scatter mode."""
-
-    def initialise(self) -> None:
-        """Get Ghost in a state to start the game."""
-
-    @property
     def on_new_tile(self) -> bool:
         """Return True if on centre of a tile.
         

@@ -4,7 +4,7 @@ from pacman_app.map import MAP, Tile, Position, Direction
 
 
 class Blinky(Ghost):
-    """Ghost that directly targets pacman."""
+    """Ghost that directly targets PacMan."""
 
     @property
     def chase_target(self) -> tuple[int,int]:
