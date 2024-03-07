@@ -23,7 +23,7 @@ class Position:
 
     @property
     def translator(self) -> int:
-        """Used for keeping the offset's in their correct range."""
+        """Used for keeping the offsets in their correct range."""
 
         return self.norm - self.norm//2 - 1
 
@@ -51,7 +51,7 @@ class Position:
 
     @offset_x.setter
     def offset_x(self, value: int) -> None:
-        """Ensure stays in range [0,self.norm-1] and automatically update tile_x."""
+        """Ensure stays in range and automatically update tile_x."""
 
         self._offset_x = (value + self.translator) % self.norm - self.translator
         self._tile_x = (self._tile_x + (value + self.translator) // self.norm) % 28
@@ -64,7 +64,7 @@ class Position:
 
     @offset_y.setter
     def offset_y(self, value: int) -> None:
-        """Ensure stays in range [0,self.norm-1] and automatically update tile_y."""
+        """Ensure stays in range and automatically update tile_y."""
 
         self._offset_y = (value + self.translator) % self.norm - self.translator
         self._tile_y = self._tile_y + (value + self.translator) // self.norm
