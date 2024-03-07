@@ -76,6 +76,12 @@ class Position:
         offset_y = (offset_y + self._translator) % self.norm - self._translator
 
         return Position((tile_x, tile_y), (offset_x, offset_y), self.norm)
+    
+    @property
+    def tile_pos(self) -> tuple[int,int]:
+        """Tuple of tile_x, tile_y."""
+
+        return self.tile_x, self.tile_y
 
     @property
     def true_x(self) -> float:

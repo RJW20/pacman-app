@@ -26,7 +26,7 @@ def main() -> None:
 
     pacman = PacMan()
     pacdots = PacDots()
-    blinky = Blinky()
+    blinky = Blinky(pacman)
     pacman.initialise()
     blinky.initialise()
     move = pacman.direction
