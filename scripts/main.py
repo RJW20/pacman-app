@@ -1,7 +1,8 @@
 import pygame
 
 from pacman_app.map import Map, Tile, Direction
-from pacman_app import PacMan, PacDots, to_pixels
+from pacman_app import PacMan, PacDots, Blinky
+from pacman_app.drawer import to_pixels
 from settings import settings
 
 
@@ -26,7 +27,9 @@ def main() -> None:
     map = Map()
     pacman = PacMan(map)
     pacdots = PacDots(map)
+    blinky = Blinky(map)
     pacman.initialise()
+    blinky.initialise()
     move = pacman.direction
 
     while running:
@@ -70,6 +73,9 @@ def main() -> None:
         for dot in pacdots:
             dot_position = to_pixels(dot, tile_size)
             pygame.draw.circle(game, 'pink', dot_position, tile_size*0.15)
+
+        blinky_position = to_pixels(blinky.position, tile_size)
+        pygame.draw.circle(game, 'red', blinky_position, tile_size*0.7)
 
         pacman_position = to_pixels(pacman.position, tile_size)
         pygame.draw.circle(game, 'yellow', pacman_position, tile_size*0.7)
