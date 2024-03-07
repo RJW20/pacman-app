@@ -10,7 +10,7 @@ class PacMan:
         self.score: int
 
     def initialise(self) -> None:
-        """Get self in a state to start the game."""
+        """Get in a state to start the game."""
 
         self.score = 0
         self.position = Position((13, 23), (4, 0), 8)
@@ -46,3 +46,12 @@ class PacMan:
         else:
             if move != self.direction and self.can_move_in_direction(self.direction):
                 self.position += self.direction.value
+
+    def collided_with(self, ghost) -> bool:
+        """Return True if ghost is sufficiently close to PacMan.
+        
+        The original definition is to return True when their centre's are on the same tile.
+        ghost is of type .ghosts.ghost.Ghost but type hint requires cyclical import.
+        """
+
+        return self.position.tile_pos == ghost.position.tile_pos
