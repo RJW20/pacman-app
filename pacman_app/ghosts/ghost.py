@@ -14,14 +14,18 @@ class Ghost:
         self.mode_count: int
 
     @property
-    def target(self) -> tuple[int,int]:
-        """Return the ghost's target as tile position for use with astar."""
+    def chase_target(self) -> tuple[int,int]:
+        """Return the Ghost's chase target as tile position for use with astar."""
+
+    @property
+    def scatter_target(self) -> tuple[int,int]:
+        """The Ghost's corner tile it retreats to during scatter mode."""
 
     def initialise(self) -> None:
-        """Get self in a state to start the game."""
+        """Get Ghost in a state to start the game."""
 
     def move(self) -> None:
-        """Set self's direction and move in it."""
+        """Set Ghost's direction and move in it."""
 
         #set direction depending on if been hit by pacman, pacman has hit a power dot
         #or if on node use astar to reset path

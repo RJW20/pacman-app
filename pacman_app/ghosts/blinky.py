@@ -6,13 +6,17 @@ class Blinky(Ghost):
     """Ghost that directly targets pacman."""
 
     @property
-    def target(self) -> tuple[int,int]:
-        """Return the pacman's closest tile."""
+    def chase_target(self) -> tuple[int,int]:
+        """Return the Ghost's chase target as tile position for use with astar."""
 
         return self.pacman.position.tile_pos
 
-    def initialise(self) -> None:
+    @property
+    def scatter_target(self) -> tuple[int,int]:
+        """The Ghost's corner tile it retreats to during scatter mode."""
 
-        """Get self in a state to start the game."""
+    def initialise(self) -> None:
+        """Get in a state to start the game."""
+
         self.position = Position((13, 11), (5, 0), 9)
         self.direction = Direction.LEFT
