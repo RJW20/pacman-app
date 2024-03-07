@@ -23,4 +23,6 @@ class Blinky(Ghost):
 
         self.position = Position((13, 11), (4, 0), 9)
         self.direction = Direction.LEFT
-        self.mode = Mode.CHASE
+        self.scatter = True
+        self.scatter_chase_index = 0
+        self.mode = Mode.SCATTER
