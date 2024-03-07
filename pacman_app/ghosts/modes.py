@@ -1,50 +1,25 @@
-from __future__ import annotations
+from enum import Enum
 import math
 
 
-class Mode:
+class Mode(Enum):
     """The mode of a ghost.
     
     Contains the total number of frames that the ghost will be in this 
-    mode for and the mode the ghost will transition to if it lasts the 
+    mode for and the id of the mode the ghost will transition to if it lasts the 
     full duration.
     """
 
-    @property
-    def duration(self) -> int:
-        return self._duration
+    def __new__(cls, *args, **kwds):
+        value = len(cls.__members__) + 1
+        obj = object.__new__(cls)
+        obj._value_ = value
+        return obj
     
-    @duration.setter
-    def duration(self, value: int) -> None:
-        self._duration = value
+    def __init__(self, duration: int | float, next_id: int):
+        self.duration = duration
+        self.next_id = next_id
 
-
-    @property
-    def next(self) -> Mode:
-        return self._next
-    
-    @next.setter
-    def next(self, value: Mode) -> None:
-        self._next = value
-        
-
-CHASE = Mode()
-SCATTER = Mode()
-FRIGHTENED = Mode()
-RETURN_TO_HOME = Mode()
-INACTIVE = Mode()
-
-CHASE.duration = 10000
-CHASE.next = SCATTER
-
-SCATTER.duration = 0
-SCATTER.next = CHASE
-
-FRIGHTENED.duration = 0
-FRIGHTENED.next = CHASE
-
-RETURN_TO_HOME.duration = math.inf
-RETURN_TO_HOME.next = INACTIVE
-
-INACTIVE.duration = 0
-INACTIVE.next = CHASE
+    CHASE = 10000, 2
+    SCATTER = 2000, 1
+    RETURN_TO_HOME = math.inf, 1

@@ -14,6 +14,32 @@ class Ghost:
         self.chase_scatter_count: int
 
     @property
+    def chase_target(self) -> tuple[int,int]:
+        """Return the Ghost's chase target as tile coordinate."""
+
+    @property
+    def scatter_target(self) -> tuple[int,int]:
+        """The Ghost's corner tile it retreats to during scatter mode."""
+
+    @property
+    def home_target(self) -> tuple[int,int]:
+        """Return the Ghost's home target as tile coordinate."""
+
+        return (13, 11)
+    
+    @property
+    def target(self) -> tuple[int,int]:
+        """Return the current target depending on the mode."""
+
+        match(self.mode):
+            case Mode.CHASE:
+                return self.chase_target
+            case Mode.SCATTER:
+                return self.scatter_target
+            case Mode.RETURN_TO_HOME:
+                return self.home_target
+
+    @property
     def on_new_tile(self) -> bool:
         """Return True if on centre of a tile.
         
@@ -54,9 +80,9 @@ class Ghost:
             self.position += self.direction.value
             return
         
-        if self.mode == Mode.CHASE:
-            self.direction = self.target_direction(self.chase_target)
-        elif self.mode == Mode.SCATTER:
-            self.direction = self.target_direction(self.chase_target)
+        #add some check to see if hit pacman or if should be frightened
+        #probably will set to frightened elsewhere so second part fine
+        
+        self.direction = self.target_direction(self.target)
 
         self.position += self.direction.value
