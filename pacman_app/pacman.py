@@ -1,4 +1,4 @@
-from pacman_app.map import MAP, Tile, Position, Direction
+from pacman_app.map import MAP, Tile, Position, distance_between, Direction
 
 
 class PacMan:
@@ -54,4 +54,4 @@ class PacMan:
         ghost is of type .ghosts.ghost.Ghost but type hint requires cyclical import.
         """
 
-        return self.position.tile_pos == ghost.position.tile_pos
+        return distance_between(self.position, ghost.position) == .0
