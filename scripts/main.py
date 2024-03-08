@@ -1,7 +1,7 @@
 import pygame
 
 from pacman_app.map import MAP, Tile, Direction
-from pacman_app import PacMan, PacDots, Blinky
+from pacman_app import PacMan, PacDots, Blinky, Pinky
 from pacman_app.drawer import to_pixels
 from settings import settings
 
@@ -27,8 +27,10 @@ def main() -> None:
     pacman = PacMan()
     pacdots = PacDots()
     blinky = Blinky(pacman)
+    pinky = Pinky(pacman)
     pacman.initialise()
     blinky.initialise()
+    pinky.initialise()
     move = pacman.direction
 
     while running:
@@ -65,6 +67,18 @@ def main() -> None:
                     pygame.draw.rect(game, 'blue', tile_rect, 1)
 
         pacman.move(move)
+        blinky.move()
+        pinky.move()
+
+        pixel_point = to_pixels(blinky.target, tile_size)
+        tile_rect = pygame.Rect((0,0), (tile_size, tile_size))
+        tile_rect.center = pixel_point
+        pygame.draw.rect(game, 'red', tile_rect, 1)
+
+        pixel_point = to_pixels(pinky.target, tile_size)
+        tile_rect = pygame.Rect((0,0), (tile_size, tile_size))
+        tile_rect.center = pixel_point
+        pygame.draw.rect(game, 'pink', tile_rect, 1)
 
         if pacdots.check_if_eaten(pacman):
             pacman.score += 10
@@ -75,6 +89,9 @@ def main() -> None:
 
         blinky_position = to_pixels(blinky.position, tile_size)
         pygame.draw.circle(game, 'red', blinky_position, tile_size*0.7)
+
+        pinky_position = to_pixels(pinky.position, tile_size)
+        pygame.draw.circle(game, 'pink', pinky_position, tile_size*0.7)
 
         pacman_position = to_pixels(pacman.position, tile_size)
         pygame.draw.circle(game, 'yellow', pacman_position, tile_size*0.7)

@@ -19,7 +19,7 @@ class Mode(Enum):
     def __init__(self, durations: list[int | float]):
         self.durations = durations
 
-    SCATTER = [600, 200, 500, 500]
+    SCATTER = [200, 200, 500, 500]
     CHASE = [1000, 200, 2000, math.inf]
     FRIGHTENED = [2000]
     RETURN_TO_HOME = [math.inf]

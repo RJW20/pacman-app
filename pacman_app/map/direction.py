@@ -13,6 +13,9 @@ class Vector:
     def __mul__(self, other: int) -> Vector:
         return Vector(self.d_x * other, self.d_y * other)
     
+    def __radd__(self, other: tuple[int,int]) -> tuple[int,int]:
+        return other[0] + self.d_x, other[1] + self.d_y
+    
     def __eq__(self, other: Vector) -> bool:
         return self.d_x == other.d_x and self.d_y == other.d_y
 
