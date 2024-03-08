@@ -151,6 +151,22 @@ class Ghosts:
                 ghost.inactive = False
                 ghost.direction = Direction.LEFT
 
+        #slow down any ghosts in the tunnel
+        for ghost in self:
+            if ghost.mode != Mode.RETURN_TO_HOME:
+                if ghost.on_left_tunnel_entrance:
+                    if ghost.direction == Direction.LEFT:
+                        ghost.position.norm = ghost.slow_norm
+                    elif ghost.direction == Direction.RIGHT:
+                        ghost.position.norm = ghost.base_norm
+                elif ghost.on_right_tunnel_entrance:
+                    if ghost.direction == Direction.RIGHT:
+                        ghost.position.norm = ghost.slow_norm
+                    elif ghost.direction == Direction.LEFT:
+                        ghost.position.norm = ghost.base_norm
+                
+            
+
     def move(self) -> None:
         """Move all the Ghosts."""
 

@@ -20,4 +20,6 @@ class Pinky(Ghost):
         """Get in a state to start the game."""
 
         super().initialise()
-        self.inactive = False
+        self.inactive = True
+        self.inactive_max = 50
+        self.inactive_count = 0

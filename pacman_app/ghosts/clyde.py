@@ -1,3 +1,5 @@
+import math
+
 from pacman_app.ghosts.ghost import Ghost
 from pacman_app.map import vector_between
 
@@ -26,4 +28,6 @@ class Clyde(Ghost):
         """Get in a state to start the game."""
 
         super().initialise()
-        self.inactive = False
+        self.inactive = True
+        self.inactive_max = math.inf
+        self.inactive_count = 0

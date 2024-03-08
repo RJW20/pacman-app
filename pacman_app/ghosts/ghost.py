@@ -53,6 +53,19 @@ class Ghost:
         """Return True if on the home entrace tile."""
 
         return self.position.tile_pos == self.home_target and self.position.offset_x == self.position.norm//2
+    
+    @property
+    def on_left_tunnel_entrance(self) -> bool:
+        """Return True if entering the tunnel on the left."""
+
+        return self.position.tile_pos == (5, 17) and self.position.offset_x == self.position.norm//2
+    
+    @property
+    def on_right_tunnel_entrance(self) -> bool:
+        """Return True if entering the tunnel on the right."""
+
+        return self.position.tile_pos == (23, 17) and \
+            self.position.offset_x == self.position.norm//2 - self.position.norm + 1
 
     @property
     def on_new_tile(self) -> bool:
