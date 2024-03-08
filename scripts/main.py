@@ -28,7 +28,7 @@ def main() -> None:
     pacman = PacMan()
     pacdots = PacDots()
     ghosts = Ghosts(pacman)
-    ghost_colours = ['red', 'pink']
+    ghost_colours = ['red', 'pink', 'cadetblue1']
 
     pacman.initialise()
     ghosts.initialise()

@@ -1,10 +1,10 @@
 from pacman_app.ghosts.ghost import Ghost
 from pacman_app.ghosts.mode import Mode
-from pacman_app.map import MAP, Tile, Position, Direction
+from pacman_app.map import Position, Direction
 
 
 class Pinky(Ghost):
-    """Ghost targets 4 tiles in front of PacMan."""
+    """Ghost that targets 4 tiles in front of PacMan."""
 
     @property
     def chase_target(self) -> tuple[int,int]:

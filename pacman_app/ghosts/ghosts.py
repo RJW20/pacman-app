@@ -1,6 +1,7 @@
 from pacman_app.ghosts.ghost import Ghost
 from pacman_app.ghosts.blinky import Blinky
 from pacman_app.ghosts.pinky import Pinky
+from pacman_app.ghosts.inky import Inky
 from pacman_app.ghosts.mode import Mode, FRIGTHENED_DURATION, INACTIVE_DURATION
 from pacman_app.pacman import PacMan
 
@@ -93,13 +94,16 @@ class Ghosts:
         #initialise list of ghosts
         blinky = Blinky(self.pacman)
         pinky = Pinky(self.pacman)
+        inky = Inky(self.pacman)
         self.items = []
         self.items.append(blinky)
         self.items.append(pinky)
+        self.items.append(inky)
 
         #initialise each ghost
-        for ghost in self:
-            ghost.initialise()
+        blinky.initialise()
+        pinky.initialise()
+        inky.initialise(blinky)
 
         #initialise self
         self.scatter_chase_index = 0
