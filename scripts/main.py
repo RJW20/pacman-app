@@ -1,7 +1,7 @@
 import pygame
 
 from pacman_app.map import MAP, Tile, Direction
-from pacman_app import PacMan, PacDots, Blinky, Pinky
+from pacman_app import PacMan, PacDots, Ghosts
 from pacman_app.ghosts.mode import Mode
 from pacman_app.drawer import to_pixels
 from settings import settings
@@ -27,12 +27,11 @@ def main() -> None:
 
     pacman = PacMan()
     pacdots = PacDots()
-    ghosts = [Blinky(pacman), Pinky(pacman)]
+    ghosts = Ghosts(pacman)
     ghost_colours = ['red', 'pink']
 
     pacman.initialise()
-    for ghost in ghosts:
-        ghost.initialise()
+    ghosts.initialise()
 
     move = pacman.direction
 
@@ -54,7 +53,8 @@ def main() -> None:
                     move = Direction.DOWN
                 elif event.key == pygame.K_LEFT:
                     move = Direction.LEFT
-
+                elif event.key == pygame.K_SPACE:
+                    pass
         
         #wipe the last frame
         screen.fill('black')
@@ -69,7 +69,18 @@ def main() -> None:
                     tile_rect.center = pixel_point
                     pygame.draw.rect(game, 'blue', tile_rect, 1)
 
+
+        ######################
+        # Move the ghosts
+        # Move pacman
+        # Check for collisions between pacman and ghosts/dots         
+        ######################
+
+
+        ghosts.move()
         pacman.move(move)
+        
+        ghosts.check_collision()
 
         if pacdots.check_if_eaten(pacman):
             pacman.score += 10
@@ -80,15 +91,15 @@ def main() -> None:
 
         for i, ghost in enumerate(ghosts):
 
-            ghost.move()
-
             pixel_point = to_pixels(ghost.target, tile_size)
             tile_rect = pygame.Rect((0,0), (tile_size, tile_size))
             tile_rect.center = pixel_point
             pygame.draw.rect(game, ghost_colours[i], tile_rect, 1)
 
-            ghost_position = to_pixels(ghost.position, tile_size)
-            pygame.draw.circle(game, ghost_colours[i], ghost_position, tile_size*0.7)
+            if not ghost.inactive:
+
+                ghost_position = to_pixels(ghost.position, tile_size)
+                pygame.draw.circle(game, ghost_colours[i], ghost_position, tile_size*0.7)
 
         pacman_position = to_pixels(pacman.position, tile_size)
         pygame.draw.circle(game, 'yellow', pacman_position, tile_size*0.7)

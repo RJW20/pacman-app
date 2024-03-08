@@ -17,10 +17,12 @@ class Mode(Enum):
         return obj
     
     def __init__(self, durations: list[int | float]):
-        self.durations = durations
+        self.DURATIONS = durations
 
     SCATTER = [400, 100, 500, 500]
     CHASE = [400, 100, 2000, math.inf]
-    FRIGHTENED = [2000]
     RETURN_TO_HOME = [math.inf]
-    INACTIVE = [100]
+
+
+FRIGTHENED_DURATION = 300
+INACTIVE_DURATION = 10
