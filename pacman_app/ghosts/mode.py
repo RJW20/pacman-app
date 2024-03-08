@@ -23,4 +23,4 @@ class Mode(Enum):
     CHASE = [400, 100, 2000, math.inf]
     FRIGHTENED = [2000]
     RETURN_TO_HOME = [math.inf]
-    INACTIVE = [1000]
+    INACTIVE = [100]

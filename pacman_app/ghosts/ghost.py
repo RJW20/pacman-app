@@ -1,4 +1,4 @@
-from typing import Literal
+import random
 
 from pacman_app.map import MAP, Tile, Position, Direction, distance_between
 from pacman_app.pacman import PacMan
@@ -29,11 +29,11 @@ class Ghost:
     @scatter.setter
     def scatter(self, value: bool) -> bool:
 
-        if not value:
-            self.scatter_chase_index += 1
+        if value:
             self.scatter_chase_max = Mode.SCATTER.durations[self.scatter_chase_index]
         else:
             self.scatter_chase_max = Mode.CHASE.durations[self.scatter_chase_index]
+            self.scatter_chase_index += 1
 
         self.scatter_chase_count = 0
         self._scatter = value
@@ -101,16 +101,18 @@ class Ghost:
 
         return self.position.offset_x == 0 and self.position.offset_y == 0
     
-    def target_direction(self, target: tuple[int,int], current_tile: Tile) -> Direction:
+    def target_direction(self,
+                         target: tuple[int,int],
+                         available_moves: list[Direction],
+                         current_tile: Tile
+                         ) -> Direction:
         """Choose the direction that takes us closest to the current target.
         
         Cannot choose to reverse direction here.
         """
 
-        #look up, right, down, left
-        directions = [Direction.UP, Direction.RIGHT, Direction.DOWN, Direction.LEFT]
         choices = []
-        for direction in directions:
+        for direction in available_moves:
 
             #ignore checking reverse direction
             if self.direction.reverse == direction:
@@ -122,9 +124,8 @@ class Ghost:
 
             #check distance from tile in the direction to target
             tile_in_direction = self.position.tile_pos + direction.value
-            if MAP[tile_in_direction] != Tile.WALL:
-                distance = distance_between(target, tile_in_direction)
-                choices.append((direction, distance))
+            distance = distance_between(target, tile_in_direction)
+            choices.append((direction, distance))
         
         #choose direction with smallest distance to target
         choices.sort(key=lambda choice: choice[1])
@@ -185,19 +186,18 @@ class Ghost:
                     self.direction = self.direction.reverse
                     self.reverse_next = False
 
-                else:
+                elif (current_tile := MAP[self.position.tile_pos]).is_node:
+
+                    available_moves = MAP.available_moves(self.position.tile_pos)
 
                     match(self.mode):
 
                         case Mode.SCATTER | Mode.CHASE | Mode.RETURN_TO_HOME:
-
-                            if (current_tile := MAP[self.position]).is_node:
-                                self.direction = self.target_direction(self.target, current_tile)
+                            self.direction = self.target_direction(self.target, available_moves, current_tile)
 
                         case Mode.FRIGHTENED:
-                            #
-                            pass
-
+                            self.direction = random.choice(available_moves)
+                            
             #move
             self.position += self.direction.value
 

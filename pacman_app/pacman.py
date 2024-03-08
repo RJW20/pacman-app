@@ -32,7 +32,7 @@ class PacMan:
                 return False
             
         #check if the tile in given direction is wall
-        if MAP[self.position + direction.value * self.position.norm] != Tile.WALL:
+        if MAP[(self.position + direction.value * self.position.norm).tile_pos] != Tile.WALL:
             return True
         
         return False
