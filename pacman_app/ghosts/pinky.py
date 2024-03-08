@@ -21,7 +21,5 @@ class Pinky(Ghost):
     def initialise(self) -> None:
         """Get in a state to start the game."""
 
-        self.mode = Mode.SCATTER
-        self.position = Position((13, 14), (4, 0), 9)
-        self.direction = Direction.LEFT
+        super().initialise()
         self.inactive = False

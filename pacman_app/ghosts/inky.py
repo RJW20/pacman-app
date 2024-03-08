@@ -23,7 +23,5 @@ class Inky(Ghost):
         """Get in a state to start the game."""
 
         self.blinky = blinky
-        self.mode = Mode.SCATTER
-        self.position = Position((13, 14), (4, 0), 9)
-        self.direction = Direction.LEFT
+        super().initialise()
         self.inactive = False

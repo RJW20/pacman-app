@@ -18,6 +18,9 @@ class Ghost:
         self.inactive: bool
         self.inactive_max: int
         self.inactive_count: int
+        self.base_norm: int = 9
+        self.fast_norm: int = 4
+        self.slow_norm: int = 13
 
     @property
     def scatter_target(self) -> tuple[int,int]:
@@ -59,6 +62,14 @@ class Ghost:
         """
 
         return self.position.offset_x == 0 and self.position.offset_y == 0
+    
+    def initialise(self) -> None:
+        """Get in a state to start the game."""
+
+        self.mode = Mode.SCATTER
+        self.position = Position((13, 14), (4, 0), 9)
+        self.direction = Direction.LEFT
+        self.frightened = False
     
     def target_direction(self,
                          target: tuple[int,int],
@@ -115,3 +126,7 @@ class Ghost:
                             
             #move
             self.position += self.direction.value
+
+        #increment if inactive
+        else:
+            self.inactive_count += 1

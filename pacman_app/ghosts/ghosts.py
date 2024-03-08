@@ -82,11 +82,15 @@ class Ghosts:
             for ghost in self:
                 if not ghost.mode == Mode.RETURN_TO_HOME:
                     ghost.frightened = True
+                    ghost.position.norm = ghost.slow_norm
 
         else:
             #revert all ghosts that were frightened
             for ghost in self:
-                ghost.frightened = False
+                if ghost.frightened:
+                    ghost.frightened = False
+                    ghost.position.norm = ghost.base_norm
+
 
     def initialise(self) -> None:
         """Get Ghosts in a state to start the game."""
@@ -137,6 +141,7 @@ class Ghosts:
                 ghost.inactive = True
                 ghost.inactive_max = INACTIVE_DURATION
                 ghost.inactive_count = 0
+                ghost.position.norm = ghost.base_norm
             elif ghost.inactive and ghost.inactive_count == ghost.inactive_max:
                 ghost.inactive = False
 
@@ -159,6 +164,8 @@ class Ghosts:
             if self.pacman.collided_with(ghost):
                 if ghost.frightened:
                     ghost.mode = Mode.RETURN_TO_HOME
+                    ghost.position.norm = ghost.fast_norm
                 else:
                     #self.pacman.kill()
-                    ghost.mode = Mode.RETURN_TO_HOME
+                    ghost.mode = Mode.RETURN_TO_HOME                   
+                    ghost.position.norm = ghost.fast_norm               
