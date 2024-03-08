@@ -59,12 +59,12 @@ class Ghost:
                 self.reverse_next = True
 
             case Mode.FRIGHTENED:
-                self.fright_inactive_max = self.mode.durations[0]
+                self.fright_inactive_max = self._mode.durations[0]
                 self.fright_inactive_count = 0
                 self.reverse_next = True
 
             case Mode.RETURN_TO_HOME | Mode.INACTIVE:
-                self.fright_inactive_max = self.mode.durations[0]
+                self.fright_inactive_max = self._mode.durations[0]
                 self.fright_inactive_count = 0
 
     @property
@@ -113,10 +113,6 @@ class Ghost:
 
         choices = []
         for direction in available_moves:
-
-            #ignore checking reverse direction
-            if self.direction.reverse == direction:
-                continue
 
             #ignore up direction if on one of the 4 restricted nodes
             if current_tile == Tile.RESTRICTED_NODE and direction == direction.UP:
@@ -189,6 +185,7 @@ class Ghost:
                 elif (current_tile := MAP[self.position.tile_pos]).is_node:
 
                     available_moves = MAP.available_moves(self.position.tile_pos)
+                    available_moves.remove(self.direction.reverse)
 
                     match(self.mode):
 
