@@ -51,11 +51,13 @@ class Ghost:
         match(value):
 
             case Mode.SCATTER:
-                self.scatter = True
+                if not self.scatter:
+                    self.scatter = True
                 self.reverse_next = True
 
             case Mode.CHASE:
-                self.scatter = False
+                if self.scatter:
+                    self.scatter = False
                 self.reverse_next = True
 
             case Mode.FRIGHTENED:
@@ -63,7 +65,10 @@ class Ghost:
                 self.fright_inactive_count = 0
                 self.reverse_next = True
 
-            case Mode.RETURN_TO_HOME | Mode.INACTIVE:
+            case Mode.RETURN_TO_HOME:
+                pass
+
+            case Mode.INACTIVE:
                 self.fright_inactive_max = self._mode.durations[0]
                 self.fright_inactive_count = 0
 
@@ -154,6 +159,8 @@ class Ghost:
                 self.scatter_chase_count += 1
                 if self.scatter_chase_count == self.scatter_chase_max:
                     self.scatter = not self.scatter
+                if self.position.tile_pos == self.target and self.on_new_tile:
+                    self.mode = Mode.INACTIVE
 
             case Mode.INACTIVE:
                 self.fright_inactive_count += 1
@@ -201,15 +208,10 @@ class Ghost:
         #update counts and change mode if needed
         self.check_mode()
 
-        #check if made it home
-        if self.mode == Mode.RETURN_TO_HOME:
-            if self.position.tile_pos == self.target and self.on_new_tile:
-                self.mode = Mode.INACTIVE
-        else:
-            #check if hit pacman
-            if self.pacman.collided_with(self):
-                if self.mode == Mode.FRIGHTENED:
-                    self.mode = Mode.RETURN_TO_HOME
-                elif self.mode == Mode.SCATTER or self.mode == Mode.CHASE:
-                    self.mode = Mode.RETURN_TO_HOME
-                    #self.pacman.kill()
+        #check if hit pacman
+        if self.pacman.collided_with(self):
+            if self.mode == Mode.FRIGHTENED:
+                self.mode = Mode.RETURN_TO_HOME
+            elif self.mode == Mode.SCATTER or self.mode == Mode.CHASE:
+                self.mode = Mode.RETURN_TO_HOME
+                #self.pacman.kill()
