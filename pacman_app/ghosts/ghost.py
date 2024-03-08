@@ -2,7 +2,7 @@ from typing import Literal
 
 from pacman_app.map import MAP, Tile, Position, Direction, distance_between
 from pacman_app.pacman import PacMan
-from pacman_app.ghosts.modes import Mode
+from pacman_app.ghosts.mode import Mode
 
 
 class Ghost:
@@ -12,12 +12,32 @@ class Ghost:
         self.pacman: PacMan = pacman
         self.position: Position
         self.direction: Direction
+        self.reverse_next: bool
         self.scatter: bool
         self.scatter_chase_index: int
         self.scatter_chase_max: int
         self.scatter_chase_count: int
-        self.fright_return_inactive_max: int
-        self.fright_return_inactive_count: int
+        self.fright_inactive_max: int
+        self.fright_inactive_count: int
+
+    @property
+    def scatter(self) -> bool:
+        """Return True if we are (or would be if not returning to home or inactive) in SCATTER mode."""
+        
+        return self._scatter
+    
+    @scatter.setter
+    def scatter(self, value: bool) -> bool:
+
+        if not value:
+            self.scatter_chase_index += 1
+            self.scatter_chase_max = Mode.SCATTER.durations[self.scatter_chase_index]
+        else:
+            self.scatter_chase_max = Mode.CHASE.durations[self.scatter_chase_index]
+
+        self.scatter_chase_count = 0
+        self._scatter = value
+
 
     @property
     def mode(self) -> Mode:
@@ -31,23 +51,21 @@ class Ghost:
         match(value):
 
             case Mode.SCATTER:
-
-                #set/update index so get correct duration (only if we're already 'in' this mode)
-                if not self.scatter:
-                        self.scatter_chase_index += 1
-
-                self.scatter_chase_max = self.mode.durations[self.scatter_chase_index]
-                self.scatter_chase_count = 0
                 self.scatter = True
+                self.reverse_next = True
 
             case Mode.CHASE:
-                self.scatter_chase_max = self.mode.durations[self.scatter_chase_index]
-                self.scatter_chase_count = 0
                 self.scatter = False
+                self.reverse_next = True
 
-            case Mode.FRIGHTENED | Mode.RETURN_TO_HOME | Mode.INACTIVE:
-                self.fright_return_inactive_max = self.mode.durations[0]
-                self.fright_return_inactive_count = 0
+            case Mode.FRIGHTENED:
+                self.fright_inactive_max = self.mode.durations[0]
+                self.fright_inactive_count = 0
+                self.reverse_next = True
+
+            case Mode.RETURN_TO_HOME | Mode.INACTIVE:
+                self.fright_inactive_max = self.mode.durations[0]
+                self.fright_inactive_count = 0
 
     @property
     def scatter_target(self) -> tuple[int,int]:
@@ -67,13 +85,12 @@ class Ghost:
     def target(self) -> tuple[int,int]:
         """Return the current target depending on the mode."""
 
-        match(self.mode):
-            case Mode.SCATTER:
-                return self.scatter_target
-            case Mode.CHASE:
-                return self.chase_target
-            case Mode.RETURN_TO_HOME:
-                return self.home_target
+        if self.mode == Mode.RETURN_TO_HOME:
+            return self.home_target
+        if self.scatter:
+            return self.scatter_target
+        else:
+            return self.chase_target
 
     @property
     def on_new_tile(self) -> bool:
@@ -109,7 +126,7 @@ class Ghost:
         choices.sort(key=lambda choice: choice[1])
         return choices[0][0]
     
-    def update_counts(self) -> None:
+    def check_mode(self) -> None:
         """Update the counters/maxs and change mode where appropriate."""
 
         match(self.mode):
@@ -125,19 +142,24 @@ class Ghost:
                     self.mode = Mode.SCATTER
 
             case Mode.FRIGHTENED:
-                self.fright_return_inactive_count += 1
-                if self.fright_return_inactive_count == self.fright_return_inactive_max:
+                self.fright_inactive_count += 1
+                if self.fright_inactive_count == self.fright_inactive_max:
                     if self.scatter:
                         self.mode = Mode.SCATTER
                     else:
                         self.mode = Mode.CHASE
 
-            case Mode.RETURN_TO_HOME | Mode.INACTIVE:
-                self.fright_return_inactive_count += 1
+            case Mode.RETURN_TO_HOME:
                 self.scatter_chase_count += 1
                 if self.scatter_chase_count == self.scatter_chase_max:
                     self.scatter = not self.scatter
-                if self.fright_return_inactive_count == self.fright_return_inactive_max:
+
+            case Mode.INACTIVE:
+                self.fright_inactive_count += 1
+                self.scatter_chase_count += 1
+                if self.scatter_chase_count == self.scatter_chase_max:
+                    self.scatter = not self.scatter
+                if self.fright_inactive_count == self.fright_inactive_max:
                     if self.scatter:
                         self.mode = Mode.SCATTER
                     else:
@@ -149,20 +171,44 @@ class Ghost:
         The Ghost's mode for this frame has already been set on the last frame.
         """
 
-        #only ever change direction on new tiles
-        if self.on_new_tile:
+        if not self.mode == Mode.INACTIVE:
 
-            match(self.mode):
+            #only ever change direction on new tiles
+            if self.on_new_tile:
 
-                case Mode.SCATTER | Mode.CHASE | Mode.RETURN_TO_HOME:
+                #carry out a forced reversal
+                if self.reverse_next:
+                    self.direction = self.direction.reverse
+                    self.reverse_next = False
 
-                    if MAP[self.position] == Tile.NODE:
-                        self.direction = self.target_direction(self.target)
+                else:
 
-        #move
-        self.position += self.direction.value
+                    match(self.mode):
 
-        #update counts (and hence self.mode)
-        self.update_counts()
+                        case Mode.SCATTER | Mode.CHASE | Mode.RETURN_TO_HOME:
 
-        #check if hit by pacman or made it to home etc and set next mode
+                            if MAP[self.position] == Tile.NODE:
+                                self.direction = self.target_direction(self.target)
+
+                        case Mode.FRIGHTENED:
+                            #move randomly including up on yellow nodes
+                            pass
+
+            #move
+            self.position += self.direction.value
+
+        #update counts and change mode if needed
+        self.check_mode()
+
+        #check if made it home
+        if self.mode == Mode.RETURN_TO_HOME:
+            if self.position.tile_pos == self.target and self.on_new_tile:
+                self.mode = Mode.INACTIVE
+        else:
+            #check if hit pacman
+            if self.pacman.collided_with(self):
+                if self.mode == Mode.FRIGHTENED:
+                    self.mode = Mode.RETURN_TO_HOME
+                elif self.mode == Mode.SCATTER or self.mode == Mode.CHASE:
+                    self.mode = Mode.RETURN_TO_HOME
+                    #self.pacman.kill()
