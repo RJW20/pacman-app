@@ -16,12 +16,12 @@ class Pinky(Ghost):
     def scatter_target(self) -> tuple[int,int]:
         """The Ghost's corner tile it retreats to during scatter mode."""
 
-        return (1, 1)
+        return (2, 0)
 
     def initialise(self) -> None:
         """Get in a state to start the game."""
 
-        self.position = Position((13, 11), (4, 0), 9)
+        self.position = Position((13, 14), (4, 0), 9)
         self.direction = Direction.LEFT
         self.scatter_chase_index = 0
         self.mode = Mode.SCATTER

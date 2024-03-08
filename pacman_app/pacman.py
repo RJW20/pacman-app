@@ -13,7 +13,7 @@ class PacMan:
         """Get in a state to start the game."""
 
         self.score = 0
-        self.position = Position((13, 23), (4, 0), 8)
+        self.position = Position((13, 26), (4, 0), 8)
         self.direction = Direction.LEFT
 
     def can_move_in_direction(self, direction: Direction) -> bool:
@@ -55,3 +55,8 @@ class PacMan:
         """
 
         return self.position.tile_pos == ghost.position.tile_pos
+    
+    def kill(self) -> None:
+        """Kill PacMan."""
+
+        pass

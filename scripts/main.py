@@ -2,6 +2,7 @@ import pygame
 
 from pacman_app.map import MAP, Tile, Direction
 from pacman_app import PacMan, PacDots, Blinky, Pinky
+from pacman_app.ghosts.mode import Mode
 from pacman_app.drawer import to_pixels
 from settings import settings
 
@@ -11,10 +12,10 @@ def main() -> None:
     #pygame setup
     width = settings['game_width']
     tile_size = width // 28
-    game_size = (tile_size * 28, tile_size * 31)
+    game_size = (tile_size * 28, tile_size * 36)
     game_offset = tile_size
     game = pygame.Surface((game_size))
-    screen_size = (tile_size * 30, tile_size * 33)
+    screen_size = (tile_size * 30, tile_size * 36)
     screen = pygame.display.set_mode(screen_size)
     pygame.display.set_caption("PacMan")
     clock = pygame.time.Clock()
@@ -26,11 +27,13 @@ def main() -> None:
 
     pacman = PacMan()
     pacdots = PacDots()
-    blinky = Blinky(pacman)
-    pinky = Pinky(pacman)
+    ghosts = [Blinky(pacman), Pinky(pacman)]
+    ghost_colours = ['red', 'pink']
+
     pacman.initialise()
-    blinky.initialise()
-    pinky.initialise()
+    for ghost in ghosts:
+        ghost.initialise()
+
     move = pacman.direction
 
     while running:
@@ -67,37 +70,31 @@ def main() -> None:
                     pygame.draw.rect(game, 'blue', tile_rect, 1)
 
         pacman.move(move)
-        blinky.move()
-        pinky.move()
-
-        pixel_point = to_pixels(blinky.target, tile_size)
-        tile_rect = pygame.Rect((0,0), (tile_size, tile_size))
-        tile_rect.center = pixel_point
-        pygame.draw.rect(game, 'red', tile_rect, 1)
-
-        pixel_point = to_pixels(pinky.target, tile_size)
-        tile_rect = pygame.Rect((0,0), (tile_size, tile_size))
-        tile_rect.center = pixel_point
-        pygame.draw.rect(game, 'pink', tile_rect, 1)
 
         if pacdots.check_if_eaten(pacman):
             pacman.score += 10
 
         for dot in pacdots:
             dot_position = to_pixels(dot, tile_size)
-            pygame.draw.circle(game, 'pink', dot_position, tile_size*0.15)
+            pygame.draw.circle(game, 'yellow', dot_position, tile_size*0.15)
 
-        blinky_position = to_pixels(blinky.position, tile_size)
-        pygame.draw.circle(game, 'red', blinky_position, tile_size*0.7)
+        for i, ghost in enumerate(ghosts):
 
-        pinky_position = to_pixels(pinky.position, tile_size)
-        pygame.draw.circle(game, 'pink', pinky_position, tile_size*0.7)
+            ghost.move()
+
+            pixel_point = to_pixels(ghost.target, tile_size)
+            tile_rect = pygame.Rect((0,0), (tile_size, tile_size))
+            tile_rect.center = pixel_point
+            pygame.draw.rect(game, ghost_colours[i], tile_rect, 1)
+
+            ghost_position = to_pixels(ghost.position, tile_size)
+            pygame.draw.circle(game, ghost_colours[i], ghost_position, tile_size*0.7)
 
         pacman_position = to_pixels(pacman.position, tile_size)
         pygame.draw.circle(game, 'yellow', pacman_position, tile_size*0.7)
         
         #display the changes
-        screen.blit(game, (game_offset, game_offset))
+        screen.blit(game, (game_offset, 0))
         pygame.display.flip()
 
         clock.tick(45)

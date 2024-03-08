@@ -7,4 +7,9 @@ class Tile(Enum):
     WALL = '|'
     PATH = '.'
     BLANK = '_'
-    NODE = 'o'
+    NODE = 'O'
+    RESTRICTED_NODE = 'o'
+
+    @property
+    def is_node(self) -> bool:
+        return self.name == 'NODE' or self.name == 'RESTRICTED_NODE'

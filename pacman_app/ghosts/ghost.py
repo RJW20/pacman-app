@@ -79,7 +79,7 @@ class Ghost:
     def home_target(self) -> tuple[int,int]:
         """Return the Ghost's home target as tile coordinate."""
 
-        return (13, 11)
+        return (13, 14)
     
     @property
     def target(self) -> tuple[int,int]:
@@ -101,7 +101,7 @@ class Ghost:
 
         return self.position.offset_x == 0 and self.position.offset_y == 0
     
-    def target_direction(self, target: tuple[int,int]) -> Direction:
+    def target_direction(self, target: tuple[int,int], current_tile: Tile) -> Direction:
         """Choose the direction that takes us closest to the current target.
         
         Cannot choose to reverse direction here.
@@ -116,8 +116,12 @@ class Ghost:
             if self.direction.reverse == direction:
                 continue
 
+            #ignore up direction if on one of the 4 restricted nodes
+            if current_tile == Tile.RESTRICTED_NODE and direction == direction.UP:
+                continue
+
             #check distance from tile in the direction to target
-            tile_in_direction = (self.position + direction.value * self.position.norm).tile_pos
+            tile_in_direction = self.position.tile_pos + direction.value
             if MAP[tile_in_direction] != Tile.WALL:
                 distance = distance_between(target, tile_in_direction)
                 choices.append((direction, distance))
@@ -187,11 +191,11 @@ class Ghost:
 
                         case Mode.SCATTER | Mode.CHASE | Mode.RETURN_TO_HOME:
 
-                            if MAP[self.position] == Tile.NODE:
-                                self.direction = self.target_direction(self.target)
+                            if (current_tile := MAP[self.position]).is_node:
+                                self.direction = self.target_direction(self.target, current_tile)
 
                         case Mode.FRIGHTENED:
-                            #move randomly including up on yellow nodes
+                            #
                             pass
 
             #move
