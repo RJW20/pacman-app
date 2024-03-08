@@ -1,6 +1,4 @@
 from pacman_app.ghosts.ghost import Ghost
-from pacman_app.ghosts.mode import Mode
-from pacman_app.map import Position, Direction
 
 
 class Blinky(Ghost):

@@ -1,6 +1,5 @@
 from pacman_app.ghosts.ghost import Ghost
-from pacman_app.ghosts.mode import Mode
-from pacman_app.map import Position, Direction, vector_between
+from pacman_app.map import vector_between
 
 
 class Inky(Ghost):

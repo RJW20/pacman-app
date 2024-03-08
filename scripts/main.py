@@ -28,7 +28,7 @@ def main() -> None:
     pacman = PacMan()
     pacdots = PacDots()
     ghosts = Ghosts(pacman)
-    ghost_colours = ['red', 'pink', 'cadetblue1']
+    ghost_colours = ['red', 'pink', 'cadetblue1', 'darkgoldenrod1']
 
     pacman.initialise()
     ghosts.initialise()
@@ -54,7 +54,7 @@ def main() -> None:
                 elif event.key == pygame.K_LEFT:
                     move = Direction.LEFT
                 elif event.key == pygame.K_SPACE:
-                    pass
+                    ghosts.frightened = True
         
         #wipe the last frame
         screen.fill('black')
@@ -68,14 +68,6 @@ def main() -> None:
                     tile_rect = pygame.Rect((0,0), (tile_size, tile_size))
                     tile_rect.center = pixel_point
                     pygame.draw.rect(game, 'blue', tile_rect, 1)
-
-
-        ######################
-        # Move the ghosts
-        # Move pacman
-        # Check for collisions between pacman and ghosts/dots         
-        ######################
-
 
         ghosts.move()
         pacman.move(move)

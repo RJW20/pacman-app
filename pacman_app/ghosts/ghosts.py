@@ -2,6 +2,7 @@ from pacman_app.ghosts.ghost import Ghost
 from pacman_app.ghosts.blinky import Blinky
 from pacman_app.ghosts.pinky import Pinky
 from pacman_app.ghosts.inky import Inky
+from pacman_app.ghosts.clyde import Clyde
 from pacman_app.ghosts.mode import Mode, FRIGTHENED_DURATION, INACTIVE_DURATION
 from pacman_app.pacman import PacMan
 
@@ -99,15 +100,18 @@ class Ghosts:
         blinky = Blinky(self.pacman)
         pinky = Pinky(self.pacman)
         inky = Inky(self.pacman)
+        clyde = Clyde(self.pacman)
         self.items = []
         self.items.append(blinky)
         self.items.append(pinky)
         self.items.append(inky)
+        self.items.append(clyde)
 
         #initialise each ghost
         blinky.initialise()
         pinky.initialise()
         inky.initialise(blinky)
+        clyde.initialise()
 
         #initialise self
         self.scatter_chase_index = 0
@@ -163,6 +167,7 @@ class Ghosts:
 
             if self.pacman.collided_with(ghost):
                 if ghost.frightened:
+                    ghost.frightened = False
                     ghost.mode = Mode.RETURN_TO_HOME
                     ghost.position.norm = ghost.fast_norm
                 else:
