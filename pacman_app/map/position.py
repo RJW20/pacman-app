@@ -8,18 +8,34 @@ class Position:
     
     tile_x, tile_y are the coordinates of the tile (0, 0 is the top left tile).
     offset_x, offset_y are the offset from the centre of the tile.
-    norm is the number of offsets in a tile.
     All values will automatically update when the offset's are large enough to put 
     self in a different tile.
     Note that only one of offset_x, offset_y will ever be non_zero.
     """
 
     def __init__(self, tile_pos: tuple[int, int], offset: tuple[int,int], norm: int):
-        self.norm: int = norm
+        self._norm: int = norm
         self.tile_x: int = tile_pos[0]
         self.tile_y: int = tile_pos[1]
         self.offset_x: int = offset[0]
         self.offset_y: int = offset[1]
+
+    @property
+    def norm(self) -> int:
+        """Number of offsets in a tile."""
+
+        return self._norm
+    
+    @norm.setter
+    def norm(self, value: int) -> None:
+        """When norm changes adjust offset to still match the true position."""
+
+        if self.offset_x != 0:
+            self.offset_x = round(value * self.offset_x/self._norm)
+        elif self.offset_y != 0:
+            self.offset_y = round(value * self.offset_y/self._norm)
+
+        self._norm = value
 
     @property
     def translator(self) -> int:

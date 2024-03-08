@@ -5,6 +5,7 @@ from pacman_app.ghosts.inky import Inky
 from pacman_app.ghosts.clyde import Clyde
 from pacman_app.ghosts.mode import Mode, FRIGTHENED_DURATION, INACTIVE_DURATION
 from pacman_app.pacman import PacMan
+from pacman_app.map import Direction
 
 
 class Ghosts:
@@ -148,6 +149,7 @@ class Ghosts:
                 ghost.position.norm = ghost.base_norm
             elif ghost.inactive and ghost.inactive_count == ghost.inactive_max:
                 ghost.inactive = False
+                ghost.direction = Direction.LEFT
 
     def move(self) -> None:
         """Move all the Ghosts."""
