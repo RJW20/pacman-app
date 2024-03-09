@@ -77,9 +77,14 @@ def main() -> None:
         if pacdots.check_if_eaten(pacman):
             pacman.score += 10
 
-        for dot in pacdots:
+        for dot in pacdots.dots:
             dot_position = to_pixels(dot, tile_size)
             pygame.draw.circle(game, 'yellow', dot_position, tile_size*0.15)
+
+        for dot in pacdots.power_dots:
+            dot_position = to_pixels(dot, tile_size)
+            pygame.draw.circle(game, 'yellow', dot_position, tile_size*0.3)
+
 
         for i, ghost in enumerate(ghosts):
 

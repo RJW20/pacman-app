@@ -98,7 +98,7 @@ class Ghost:
         for direction in available_moves:
 
             #ignore up direction if on one of the 4 restricted nodes
-            if current_tile == Tile.RESTRICTED_NODE and direction == direction.UP:
+            if current_tile.is_restricted_node and direction == direction.UP:
                 continue
 
             #check distance from tile in the direction to target
