@@ -17,6 +17,11 @@ class PacDots:
                 elif tile.is_power_dot:
                     self.power_dots.append((i,j))
 
+    @property
+    def remaining(self) -> int:
+        """Return the number of dots and powered dots left."""
+        return len(self.dots) + len(self.power_dots)
+
     def check_if_eaten(self, pacman: PacMan) -> bool:
         """Return True if pacman is considered to have eaten a pacdot.
         
@@ -28,7 +33,15 @@ class PacDots:
                abs(pacman.position.true_y - dot[1]) < 0.15:
                 self.dots.remove(dot)
                 return True
-            
+
+        return False 
+    
+    def check_if_powered(self, pacman: PacMan) -> bool:
+        """Return True if pacman is considered to have eaten a powered pacdot.
+        
+        Also remove that pacdot from self.power_dots.
+        """
+
         for dot in self.power_dots:
             if abs(pacman.position.true_x - dot[0]) < 0.15 and \
                abs(pacman.position.true_y - dot[1]) < 0.15:

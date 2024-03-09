@@ -1,3 +1,5 @@
+from typing import Generator
+
 from pacman_app.ghosts.ghost import Ghost
 from pacman_app.ghosts.blinky import Blinky
 from pacman_app.ghosts.pinky import Pinky
@@ -13,14 +15,20 @@ class Ghosts:
 
     def __init__(self, pacman: PacMan) -> None:
         self.pacman: PacMan = pacman
-        self.items: list[Ghost]
+        self.blinky: Blinky
+        self.pinky: Pinky
+        self.inky: Inky
+        self.clyde: Clyde
         self.scatter_chase_index: int
         self.scatter_chase_max: int
         self.scatter_chase_count: int
         self.frightened_count: int
 
-    def __getitem__(self, key: int) -> Ghost:
-        return self.items[key]
+    def __iter__(self) -> Generator[Ghost,None,None]:
+        yield self.blinky
+        yield self.pinky
+        yield self.inky
+        yield self.clyde
 
     @property
     def scatter(self) -> bool:
@@ -84,6 +92,7 @@ class Ghosts:
             for ghost in self:
                 if not ghost.mode == Mode.RETURN_TO_HOME:
                     ghost.frightened = True
+                    ghost.reverse_next = True
                     ghost.position.norm = ghost.slow_norm
 
         else:
@@ -98,21 +107,16 @@ class Ghosts:
         """Get Ghosts in a state to start the game."""
 
         #initialise list of ghosts
-        blinky = Blinky(self.pacman)
-        pinky = Pinky(self.pacman)
-        inky = Inky(self.pacman)
-        clyde = Clyde(self.pacman)
-        self.items = []
-        self.items.append(blinky)
-        self.items.append(pinky)
-        self.items.append(inky)
-        self.items.append(clyde)
+        self.blinky = Blinky(self.pacman)
+        self.pinky = Pinky(self.pacman)
+        self.inky = Inky(self.pacman)
+        self.clyde = Clyde(self.pacman)
 
         #initialise each ghost
-        blinky.initialise()
-        pinky.initialise()
-        inky.initialise(blinky)
-        clyde.initialise()
+        self.blinky.initialise()
+        self.pinky.initialise()
+        self.inky.initialise(self.blinky)
+        self.clyde.initialise()
 
         #initialise self
         self.scatter_chase_index = 0
@@ -153,7 +157,7 @@ class Ghosts:
 
         #slow down any ghosts in the tunnel
         for ghost in self:
-            if ghost.mode != Mode.RETURN_TO_HOME:
+            if ghost.mode != Mode.RETURN_TO_HOME and not ghost.frightened:
                 if ghost.on_left_tunnel_entrance:
                     if ghost.direction == Direction.LEFT:
                         ghost.position.norm = ghost.slow_norm
@@ -190,5 +194,4 @@ class Ghosts:
                     ghost.position.norm = ghost.fast_norm
                 else:
                     #self.pacman.kill()
-                    ghost.mode = Mode.RETURN_TO_HOME                   
-                    ghost.position.norm = ghost.fast_norm               
+                    pass            

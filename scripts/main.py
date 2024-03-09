@@ -76,6 +76,17 @@ def main() -> None:
 
         if pacdots.check_if_eaten(pacman):
             pacman.score += 10
+            if pacdots.remaining == 214:
+                ghosts.inky.inactive = False
+            elif pacdots.remaining == 164:
+                ghosts.clyde.inactive = False
+        elif pacdots.check_if_powered(pacman):
+            pacman.score += 50
+            ghosts.frightened = True
+            if pacdots.remaining == 214:
+                ghosts.inky.inactive = False
+            elif pacdots.remaining == 164:
+                ghosts.clyde.inactive = False
 
         for dot in pacdots.dots:
             dot_position = to_pixels(dot, tile_size)
