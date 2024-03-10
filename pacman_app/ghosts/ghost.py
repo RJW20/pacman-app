@@ -15,6 +15,7 @@ class Ghost:
         self.direction: Direction
         self.reverse_next: bool
         self.frightened: bool
+        self.frightened_count: int
         self.inactive: bool
         self.inactive_max: int
         self.inactive_count: int

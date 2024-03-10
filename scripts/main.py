@@ -2,7 +2,7 @@ import pygame
 
 from pacman_app.map import MAP, Tile, Direction
 from pacman_app import PacDots, Ghosts, Blinky, Pinky, Inky, Clyde
-from pacman_app.sprites import PacManSprite
+from pacman_app.sprites import PacManSprite, BlinkySprite
 from pacman_app.drawer import to_pixels
 from pacman_app.sprites import SpriteSheet
 from settings import settings
@@ -27,16 +27,14 @@ def main() -> None:
     #bg = pygame.transform.scale(bg, game_size)
 
     spritesheet = SpriteSheet(tile_size)
-    ghost_sprites = [spritesheet.image_at(0, j, 14) for j in range (4,8)]
 
     pacman = PacManSprite(spritesheet)
     pacdots = PacDots()
     ghosts = Ghosts(pacman)
-    ghosts.blinky = Blinky(pacman)
+    ghosts.blinky = BlinkySprite(pacman, spritesheet)
     ghosts.pinky = Pinky(pacman)
     ghosts.inky = Inky(pacman)
     ghosts.clyde = Clyde(pacman)
-    ghost_colours = ['red', 'pink', 'cadetblue1', 'darkgoldenrod1']
 
     pacman.initialise()
     ghosts.initialise()
@@ -104,6 +102,7 @@ def main() -> None:
             dot_position = to_pixels(dot, tile_size)
             pygame.draw.circle(game, 'yellow', dot_position, tile_size*0.3)
 
+        '''
         for i, ghost in enumerate(ghosts):
 
             pixel_point = to_pixels(ghost.target, tile_size)
@@ -114,13 +113,20 @@ def main() -> None:
             if not ghost.inactive:
 
                 ghost_position = to_pixels(ghost.position, tile_size)
-                ghost_rect = ghost_sprites[i].get_rect()  # get image position and size as Rect()
+                ghost_rect = ghost_sprites[i].get_rect()
                 ghost_rect.center = ghost_position 
                 game.blit(ghost_sprites[i], ghost_rect)
                 #pygame.draw.circle(game, ghost_colours[i], ghost_position, tile_size*0.7)
+        '''
+
+        if not ghosts.blinky.inactive:
+            ghost_position = to_pixels(ghosts.blinky.position, tile_size)
+            ghost_rect = ghosts.blinky.sprite.get_rect()
+            ghost_rect.center = ghost_position 
+            game.blit(ghosts.blinky.sprite, ghost_rect)
 
         pacman_position = to_pixels(pacman.position, tile_size)
-        pacman_rect = pacman.sprite.get_rect()  # get image position and size as Rect()
+        pacman_rect = pacman.sprite.get_rect()
         pacman_rect.center = pacman_position 
         game.blit(pacman.sprite, pacman_rect)
         #pygame.draw.circle(game, 'yellow', pacman_position, tile_size*0.7)

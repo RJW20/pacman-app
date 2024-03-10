@@ -5,7 +5,7 @@ from pacman_app.ghosts.blinky import Blinky
 from pacman_app.ghosts.pinky import Pinky
 from pacman_app.ghosts.inky import Inky
 from pacman_app.ghosts.clyde import Clyde
-from pacman_app.ghosts.mode import Mode, FRIGTHENED_DURATION, INACTIVE_DURATION
+from pacman_app.ghosts.mode import Mode, FRIGHTENED_DURATION, INACTIVE_DURATION
 from pacman_app.pacman import PacMan
 from pacman_app.map import Direction
 
@@ -92,6 +92,7 @@ class Ghosts:
             for ghost in self:
                 if not ghost.mode == Mode.RETURN_TO_HOME:
                     ghost.frightened = True
+                    ghost.frightened_count = FRIGHTENED_DURATION
                     ghost.reverse_next = True
                     ghost.position.norm = ghost.slow_norm
 
@@ -130,7 +131,9 @@ class Ghosts:
         #advance through whichever state self is in
         if self.frightened:
             self.frightened_count += 1
-            if self.frightened_count == FRIGTHENED_DURATION:
+            for ghost in self:
+                ghost.frightened_count -= 1
+            if self.frightened_count == FRIGHTENED_DURATION:
                 self.frightened = False
         else:
             self.scatter_chase_count += 1
