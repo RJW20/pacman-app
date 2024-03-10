@@ -1,10 +1,10 @@
 import pygame
 
 from pacman_app.map import MAP, Tile, Direction
-from pacman_app import PacMan, PacDots, Ghosts, Blinky, Pinky, Inky, Clyde
-from pacman_app.ghosts.mode import Mode
+from pacman_app import PacDots, Ghosts, Blinky, Pinky, Inky, Clyde
+from pacman_app.sprites import PacManSprite
 from pacman_app.drawer import to_pixels
-from pacman_app.characters import SpriteSheet
+from pacman_app.sprites import SpriteSheet
 from settings import settings
 
 
@@ -27,10 +27,9 @@ def main() -> None:
     #bg = pygame.transform.scale(bg, game_size)
 
     spritesheet = SpriteSheet(tile_size)
-    pacman_sprite = spritesheet.image_at(0, 0, 13)
     ghost_sprites = [spritesheet.image_at(0, j, 14) for j in range (4,8)]
 
-    pacman = PacMan()
+    pacman = PacManSprite(spritesheet)
     pacdots = PacDots()
     ghosts = Ghosts(pacman)
     ghosts.blinky = Blinky(pacman)
@@ -121,9 +120,9 @@ def main() -> None:
                 #pygame.draw.circle(game, ghost_colours[i], ghost_position, tile_size*0.7)
 
         pacman_position = to_pixels(pacman.position, tile_size)
-        pacman_rect = pacman_sprite.get_rect()  # get image position and size as Rect()
+        pacman_rect = pacman.sprite.get_rect()  # get image position and size as Rect()
         pacman_rect.center = pacman_position 
-        game.blit(pacman_sprite, pacman_rect)
+        game.blit(pacman.sprite, pacman_rect)
         #pygame.draw.circle(game, 'yellow', pacman_position, tile_size*0.7)
         
         #display the changes
