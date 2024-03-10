@@ -13,7 +13,7 @@ class ClydeSprite(Clyde):
         super().__init__(pacman)
 
         self.up = [spritesheet.image_at(4, 7, 14), spritesheet.image_at(5, 7, 14)]
-        self.right = [spritesheet.image_at(0, 7, 14), spritesheet.image_at(1, 4, 14)]
+        self.right = [spritesheet.image_at(0, 7, 14), spritesheet.image_at(1, 7, 14)]
         self.down = [spritesheet.image_at(6, 7, 14), spritesheet.image_at(7, 7, 14)]
         self.left = [spritesheet.image_at(2, 7, 14), spritesheet.image_at(3, 7, 14)]
         self.frightened_blue = [spritesheet.image_at(8, 4, 14), spritesheet.image_at(9, 4, 14)]

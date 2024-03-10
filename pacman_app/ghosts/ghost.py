@@ -8,6 +8,10 @@ from pacman_app.ghosts.mode import Mode
 class Ghost:
     """Base class for one of the ghosts that chase PacMan."""
 
+    base_norm = 8
+    fast_norm = 4
+    slow_norm = 13
+
     def __init__(self, pacman: PacMan) -> None:
         self.pacman: PacMan = pacman
         self.mode: Mode
@@ -19,9 +23,6 @@ class Ghost:
         self.inactive: bool
         self.inactive_max: int
         self.inactive_count: int
-        self.base_norm: int = 9
-        self.fast_norm: int = 4
-        self.slow_norm: int = 13
 
     @property
     def scatter_target(self) -> tuple[int,int]:
