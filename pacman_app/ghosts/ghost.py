@@ -130,11 +130,7 @@ class Ghost:
                 elif (current_tile := MAP[self.position.tile_pos]).is_node:
 
                     available_moves = MAP.available_moves(self.position.tile_pos)
-                    try:
-                        available_moves.remove(self.direction.reverse)
-                    except Exception:
-                        print(self.__class__.__name__, self.direction, available_moves)
-                        exit()
+                    available_moves.remove(self.direction.reverse)
 
                     if not self.frightened:
                         self.direction = self.target_direction(self.target, available_moves, current_tile)

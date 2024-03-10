@@ -106,12 +106,6 @@ class Ghosts:
     def initialise(self) -> None:
         """Get Ghosts in a state to start the game."""
 
-        #initialise list of ghosts
-        self.blinky = Blinky(self.pacman)
-        self.pinky = Pinky(self.pacman)
-        self.inky = Inky(self.pacman)
-        self.clyde = Clyde(self.pacman)
-
         #initialise each ghost
         self.blinky.initialise()
         self.pinky.initialise()
@@ -168,8 +162,6 @@ class Ghosts:
                         ghost.position.norm = ghost.slow_norm
                     elif ghost.direction == Direction.LEFT:
                         ghost.position.norm = ghost.base_norm
-                
-            
 
     def move(self) -> None:
         """Move all the Ghosts."""
