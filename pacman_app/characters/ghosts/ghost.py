@@ -56,23 +56,20 @@ class Ghost(Character):
     def on_left_tunnel_entrance(self) -> bool:
         """Return True if entering the tunnel on the left."""
 
-        return self.position.tile_pos == (5, 17) and self.position.offset_x == self.position.norm//2 and \
-            int(self.speed.step_sizes[self._speed_count - 1]) != 0
+        return self.position.tile_pos == (6, 17) and self.on_new_tile
     
     @property
     def on_right_tunnel_entrance(self) -> bool:
         """Return True if entering the tunnel on the right."""
 
-        return self.position.tile_pos == (23, 17) and \
-            self.position.offset_x == self.position.norm//2 - self.position.norm + 1 and \
-            int(self.speed.step_sizes[self._speed_count - 1]) != 0
+        return self.position.tile_pos == (21, 17) and self.on_new_tile
     
     @property
     def in_tunnel(self) -> bool:
         """Return True if in the tunnel."""
 
         return self.position.tile_y == 17 and \
-            (self.position.tile_x < 6  or self.position.tile_x > 22)
+            (self.position.tile_x < 6  or self.position.tile_x > 21)
 
     @property
     def on_new_tile(self) -> bool:
@@ -148,6 +145,25 @@ class Ghost(Character):
                     else:
                         self.direction = random.choice(available_moves)
                             
+            #deal with ghosts in tunnel
+            if self.mode != Mode.RETURN_TO_HOME:
+                if self.on_left_tunnel_entrance:
+                    if self.direction == Direction.LEFT:
+                        self.speed = Speed.GHOST_TUNNEL
+                    else:
+                        if self.frightened:
+                            self.speed = Speed.GHOST_FRIGHT
+                        else:
+                            self.speed = Speed.GHOST_NORMAL
+                elif self.on_right_tunnel_entrance:
+                    if self.direction == Direction.RIGHT:
+                        self.speed = Speed.GHOST_TUNNEL
+                    else:
+                        if self.frightened:
+                            self.speed = Speed.GHOST_FRIGHT
+                        else:
+                            self.speed = Speed.GHOST_NORMAL
+           
             #move
             super().move()
 
