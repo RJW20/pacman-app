@@ -13,7 +13,7 @@ class Position:
     Note that only one of offset_x, offset_y will ever be non_zero.
     """
 
-    def __init__(self, tile_pos: tuple[int, int], offset: tuple[int,int], norm: int = 10):
+    def __init__(self, tile_pos: tuple[int, int], offset: tuple[int,int], norm: int = 8):
         self._norm: int = norm
         self.tile_x: int = tile_pos[0]
         self.tile_y: int = tile_pos[1]

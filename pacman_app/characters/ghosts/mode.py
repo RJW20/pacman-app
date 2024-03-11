@@ -19,8 +19,8 @@ class Mode(Enum):
     def __init__(self, durations: list[int | float]):
         self.DURATIONS = durations
 
-    SCATTER = [400, 400, 500, 500]
-    CHASE = [400, 400, 2000, math.inf]
+    SCATTER = [420, 420, 300, 300]
+    CHASE = [1200, 1200, 1200, math.inf]
     RETURN_TO_HOME = [math.inf]
 
 

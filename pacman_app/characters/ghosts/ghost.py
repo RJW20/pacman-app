@@ -139,8 +139,6 @@ class Ghost(Character):
                 elif (current_tile := MAP[self.position.tile_pos]).is_node:
 
                     available_moves = MAP.available_moves(self.position.tile_pos)
-                    print(available_moves)
-                    print(self.direction, self.direction.reverse)
                     available_moves.remove(self.direction.reverse)
 
                     if not self.frightened:
