@@ -157,7 +157,7 @@ class Ghosts:
                 ghost.inactive = True
                 ghost.inactive_max = INACTIVE_DURATION
                 ghost.inactive_count = 0
-                ghost.speed = Speed.GHOST_RETURN
+                ghost.speed = Speed.GHOST_NORMAL
             elif ghost.inactive and ghost.inactive_count == ghost.inactive_max:
                 ghost.inactive = False
                 ghost.direction = Direction.LEFT

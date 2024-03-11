@@ -56,14 +56,16 @@ class Ghost(Character):
     def on_left_tunnel_entrance(self) -> bool:
         """Return True if entering the tunnel on the left."""
 
-        return self.position.tile_pos == (5, 17) and self.position.offset_x == self.position.norm//2
+        return self.position.tile_pos == (5, 17) and self.position.offset_x == self.position.norm//2 and \
+            int(self.speed.step_sizes[self._speed_count - 1]) != 0
     
     @property
     def on_right_tunnel_entrance(self) -> bool:
         """Return True if entering the tunnel on the right."""
 
         return self.position.tile_pos == (23, 17) and \
-            self.position.offset_x == self.position.norm//2 - self.position.norm + 1
+            self.position.offset_x == self.position.norm//2 - self.position.norm + 1 and \
+            int(self.speed.step_sizes[self._speed_count - 1]) != 0
     
     @property
     def in_tunnel(self) -> bool:

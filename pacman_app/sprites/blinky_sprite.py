@@ -22,7 +22,7 @@ class BlinkySprite(Blinky):
         self.eyes = [spritesheet.image_at(10, 5, 14), spritesheet.image_at(8, 5, 14), 
                      spritesheet.image_at(11, 5, 14), spritesheet.image_at(9, 5, 14)]
         self.sprite_count = -1
-        self.repeat_count = 10
+        self.repeat_count = 14
         self.frightened_color_switches = [self.repeat_count * i for i in range(1,10)]
 
     @property
