@@ -1,20 +1,22 @@
+from pacman_app.characters.character import Character
+from pacman_app.characters.speed import Speed
 from pacman_app.map import MAP, Tile, Position, Direction
 
 
-class PacMan:
+class PacMan(Character):
     """The playable character."""
 
     def __init__(self) -> None:
-        self.position: Position
-        self.direction: Direction
+        super().__init__()
         self.score: int
 
     def initialise(self) -> None:
         """Get in a state to start the game."""
 
         self.score = 0
-        self.position = Position((13, 26), (4, 0), 7)
+        self.position = Position((13, 26), (5, 0))
         self.direction = Direction.LEFT
+        self.speed = Speed.PACMAN_NORMAL
 
     def can_move_in_direction(self, direction: Direction) -> bool:
         """Return True if moving in the given direction is a valid move."""
@@ -42,10 +44,10 @@ class PacMan:
 
         if self.can_move_in_direction(move):
             self.direction = move
-            self.position += self.direction.value
+            super().move()
         else:
             if move != self.direction and self.can_move_in_direction(self.direction):
-                self.position += self.direction.value
+                super().move()
 
     def collided_with(self, ghost) -> bool:
         """Return True if ghost is sufficiently close to PacMan.

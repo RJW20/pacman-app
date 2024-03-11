@@ -42,6 +42,7 @@ class Game:
             #so can quit
             if event.type == pygame.QUIT: 
                 pygame.quit()
+                exit()
 
             #set move
             if event.type == pygame.KEYDOWN:
@@ -68,14 +69,14 @@ class Game:
             self.pacman.score += 10
             if self.pacdots.remaining == 214:
                 self.ghosts.inky.inactive = False
-            elif self.pacdots.remaining == 164:
+            elif self.pacdots.remaining == 184:
                 self.ghosts.clyde.inactive = False
         elif self.pacdots.check_if_powered(self.pacman):
             self.pacman.score += 50
             self.ghosts.frightened = True
             if self.pacdots.remaining == 214:
                 self.ghosts.inky.inactive = False
-            elif self.pacdots.remaining == 164:
+            elif self.pacdots.remaining == 184:
                 self.ghosts.clyde.inactive = False
 
     def update_screen(self) -> None:
@@ -125,4 +126,4 @@ class Game:
             self.advance(pacman_move)
             self.update_screen()
 
-            self.clock.tick(45)
+            self.clock.tick(60)

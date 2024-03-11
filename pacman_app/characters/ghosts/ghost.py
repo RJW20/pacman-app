@@ -1,22 +1,18 @@
 import random
 
 from pacman_app.map import MAP, Tile, Position, Direction, distance_between
-from pacman_app.pacman import PacMan
-from pacman_app.ghosts.mode import Mode
+from pacman_app.characters.character import Character
+from pacman_app.characters.pacman import PacMan
+from pacman_app.characters.ghosts.mode import Mode
+from pacman_app.characters.speed import Speed
 
 
-class Ghost:
+class Ghost(Character):
     """Base class for one of the ghosts that chase PacMan."""
-
-    base_norm = 8
-    fast_norm = 4
-    slow_norm = 13
 
     def __init__(self, pacman: PacMan) -> None:
         self.pacman: PacMan = pacman
         self.mode: Mode
-        self.position: Position
-        self.direction: Direction
         self.reverse_next: bool
         self.frightened: bool
         self.frightened_count: int
@@ -68,22 +64,33 @@ class Ghost:
 
         return self.position.tile_pos == (23, 17) and \
             self.position.offset_x == self.position.norm//2 - self.position.norm + 1
+    
+    @property
+    def in_tunnel(self) -> bool:
+        """Return True if in the tunnel."""
+
+        return self.position.tile_y == 17 and \
+            (self.position.tile_x < 6  or self.position.tile_x > 22)
 
     @property
     def on_new_tile(self) -> bool:
         """Return True if on centre of a tile.
         
         This indicates the Ghost has finished transitioning from one tile to another.
+        Note we ignore times when the previous step size was zero, as we will have already 
+        accounted for this instance of being here.
         """
 
-        return self.position.offset_x == 0 and self.position.offset_y == 0
+        return self.position.offset_x == 0 and self.position.offset_y == 0 and \
+            int(self.speed.step_sizes[self._speed_count - 1]) != 0
     
     def initialise(self) -> None:
         """Get in a state to start the game."""
 
         self.mode = Mode.SCATTER
-        self.position = Position((13, 14), (4, 0), 9)
+        self.position = Position((13, 14), (5, 0))
         self.direction = Direction.LEFT
+        self.speed = Speed.GHOST_NORMAL
         self.frightened = False
     
     def target_direction(self,
@@ -132,6 +139,8 @@ class Ghost:
                 elif (current_tile := MAP[self.position.tile_pos]).is_node:
 
                     available_moves = MAP.available_moves(self.position.tile_pos)
+                    print(available_moves)
+                    print(self.direction, self.direction.reverse)
                     available_moves.remove(self.direction.reverse)
 
                     if not self.frightened:
@@ -140,7 +149,7 @@ class Ghost:
                         self.direction = random.choice(available_moves)
                             
             #move
-            self.position += self.direction.value
+            super().move()
 
         #increment if inactive
         else:

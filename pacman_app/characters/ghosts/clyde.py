@@ -1,6 +1,6 @@
 import math
 
-from pacman_app.ghosts.ghost import Ghost
+from pacman_app.characters.ghosts.ghost import Ghost
 from pacman_app.map import vector_between
 
 

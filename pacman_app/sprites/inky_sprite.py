@@ -3,7 +3,7 @@ import pygame
 from pacman_app import Inky, PacMan
 from pacman_app.sprites.spritesheet import SpriteSheet
 from pacman_app.map import Direction
-from pacman_app.ghosts.mode import Mode
+from pacman_app.characters.ghosts.mode import Mode
 from pacman_app.pixels import to_pixels
 
 
