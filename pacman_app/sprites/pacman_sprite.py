@@ -1,8 +1,9 @@
 import pygame
 
 from pacman_app import PacMan
-from pacman_app.sprites import SpriteSheet
+from pacman_app.sprites.spritesheet import SpriteSheet
 from pacman_app.map import Direction
+from pacman_app.pixels import to_pixels
 
 
 class PacManSprite(PacMan):
@@ -42,3 +43,10 @@ class PacManSprite(PacMan):
             return sprite_list[self.sprite_count // self.repeat_count - 1]
         else:
             return sprite_list[0]
+        
+    def draw(self, surface: pygame.Surface, tile_size: int) -> None:
+        """Draw self's current sprite onto the surface at the correct position."""
+
+        rect = self.sprite.get_rect()
+        rect.center = to_pixels(self.position, tile_size)
+        surface.blit(self.sprite, rect)

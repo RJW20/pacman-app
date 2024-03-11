@@ -1,9 +1,10 @@
 import pygame
 
 from pacman_app import Blinky, PacMan
-from pacman_app.sprites import SpriteSheet
+from pacman_app.sprites.spritesheet import SpriteSheet
 from pacman_app.map import Direction
 from pacman_app.ghosts.mode import Mode
+from pacman_app.pixels import to_pixels
 
 
 class BlinkySprite(Blinky):
@@ -23,7 +24,7 @@ class BlinkySprite(Blinky):
         self.sprite_count = -1
         self.repeat_count = 10
         self.frightened_color_switches = [self.repeat_count * i for i in range(1,10)]
-        
+
     @property
     def sprite(self) -> pygame.Surface:
         """Return the sprite corresponding to PacMan's current position and state."""
@@ -67,3 +68,10 @@ class BlinkySprite(Blinky):
                     return self.eyes[2]
                 case Direction.LEFT:
                     return self.eyes[3]
+                
+    def draw(self, surface: pygame.Surface, tile_size: int) -> None:
+        """Draw self's current sprite onto the surface at the correct position."""
+
+        rect = self.sprite.get_rect()
+        rect.center = to_pixels(self.position, tile_size)
+        surface.blit(self.sprite, rect)

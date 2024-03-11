@@ -1,9 +1,10 @@
 import pygame
 
 from pacman_app import Inky, PacMan
-from pacman_app.sprites import SpriteSheet
+from pacman_app.sprites.spritesheet import SpriteSheet
 from pacman_app.map import Direction
 from pacman_app.ghosts.mode import Mode
+from pacman_app.pixels import to_pixels
 
 
 class InkySprite(Inky):
@@ -66,4 +67,11 @@ class InkySprite(Inky):
                 case Direction.DOWN:
                     return self.eyes[2]
                 case Direction.LEFT:
-                    return self.eyes[3]    
+                    return self.eyes[3]
+                
+    def draw(self, surface: pygame.Surface, tile_size: int) -> None:
+        """Draw self's current sprite onto the surface at the correct position."""
+
+        rect = self.sprite.get_rect()
+        rect.center = to_pixels(self.position, tile_size)
+        surface.blit(self.sprite, rect)
