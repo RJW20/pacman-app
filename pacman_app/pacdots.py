@@ -29,8 +29,7 @@ class PacDots:
         """
 
         for dot in self.dots:
-            if abs(pacman.position.true_x - dot[0]) < 0.15 and \
-               abs(pacman.position.true_y - dot[1]) < 0.15:
+            if pacman.on_new_tile and pacman.position.tile_pos == dot:
                 self.dots.remove(dot)
                 return True
 
@@ -43,9 +42,8 @@ class PacDots:
         """
 
         for dot in self.power_dots:
-            if abs(pacman.position.true_x - dot[0]) < 0.15 and \
-               abs(pacman.position.true_y - dot[1]) < 0.15:
+            if pacman.on_new_tile and pacman.position.tile_pos == dot:
                 self.power_dots.remove(dot)
                 return True
-
+            
         return False 

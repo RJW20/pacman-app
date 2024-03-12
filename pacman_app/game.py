@@ -69,8 +69,10 @@ class Game:
         #update pacdots
         if self.pacdots.check_if_eaten(self.pacman):
             self.pacman.score += 10
+            self.pacman.move_next = False
         elif self.pacdots.check_if_powered(self.pacman):
             self.pacman.score += 50
+            self.pacman.move_next = False
             self.ghosts.frightened = True
 
         #alter ghosts depending on remaining dots

@@ -9,11 +9,13 @@ class PacMan(Character):
     def __init__(self) -> None:
         super().__init__()
         self.score: int
+        self.move_next: bool
 
     def initialise(self) -> None:
         """Get in a state to start the game."""
 
         self.score = 0
+        self.move_next = True
         self.position = Position((14, 26), (5, 0))
         self.direction = Direction.LEFT
         self.speed = Speed.PACMAN_NORMAL
@@ -42,6 +44,10 @@ class PacMan(Character):
     def move(self, move: Direction) -> None:
         """Move PacMan in the given direction if possible, otherwise continue."""
 
+        if not self.move_next:
+            self.move_next = True
+            return
+        
         if self.can_move_in_direction(move):
             self.direction = move
             super().move()

@@ -70,18 +70,6 @@ class Ghost(Character):
 
         return self.position.tile_y == 17 and \
             (self.position.tile_x < 7  or self.position.tile_x > 22)
-
-    @property
-    def on_new_tile(self) -> bool:
-        """Return True if on centre of a tile.
-        
-        This indicates the Ghost has finished transitioning from one tile to another.
-        Note we ignore times when the previous step size was zero, as we will have already 
-        accounted for this instance of being here.
-        """
-
-        return self.position.offset_x == 0 and self.position.offset_y == 0 and \
-            int(self.speed.step_sizes[self._speed_count - 1]) != 0
     
     def initialise(self) -> None:
         """Get in a state to start the game."""

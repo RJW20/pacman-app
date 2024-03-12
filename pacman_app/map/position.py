@@ -70,7 +70,7 @@ class Position:
         """Ensure stays in range and automatically update tile_x."""
 
         self._offset_x = (value + self.translator) % self.norm - self.translator
-        self._tile_x = (self._tile_x + (value + self.translator) // self.norm) % 28
+        self._tile_x = (((self._tile_x + (value + self.translator) // self.norm) - 1) % 28) + 1
 
     @property
     def offset_y(self) -> int:

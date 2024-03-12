@@ -18,6 +18,18 @@ class Character:
         self._speed = value
         self._speed_count = 0
 
+    @property
+    def on_new_tile(self) -> bool:
+        """Return True if on centre of a tile.
+        
+        This indicates the character has finished transitioning from one tile to another.
+        Note we ignore times when the previous step size was zero, as we will have already 
+        accounted for this instance of being here.
+        """
+
+        return self.position.offset_x == 0 and self.position.offset_y == 0 and \
+            int(self.speed.step_sizes[self._speed_count - 1]) != 0
+
     def move(self) -> None:
         """Update position using direction and speed."""
 
