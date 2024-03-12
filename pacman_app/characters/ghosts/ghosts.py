@@ -155,7 +155,7 @@ class Ghosts:
         if self.frightened:
             self.frightened_count += 1
             for ghost in self:
-                if not ghost.frightened:
+                if ghost.frightened:
                     ghost.frightened_count -= 1
             if self.frightened_count == FRIGHTENED_DURATION:
                 self.frightened = False
