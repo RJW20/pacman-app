@@ -3,6 +3,8 @@ import pygame
 from pacman_app.background import Background
 from pacman_app import PacDots, Ghosts
 from pacman_app.sprites import SpriteSheet, PacManSprite, BlinkySprite, PinkySprite, InkySprite, ClydeSprite
+from pacman_app.sprites.letters import Letters
+from pacman_app.sprites.numbers import Numbers
 from pacman_app.map import Direction
 from pacman_app.pixels import to_pixels
 
@@ -23,8 +25,12 @@ class Game:
         #background set up
         self.bg = Background(self.tile_size)
 
-        #character set up
+        #letter/number set up
         spritesheet = SpriteSheet(self.tile_size)
+        self.letters = Letters(spritesheet, self.tile_size)
+        self.numbers = Numbers(spritesheet)
+
+        #character set up
         self.pacman = PacManSprite(spritesheet)
         self.pacdots = PacDots()
         self.ghosts = Ghosts(self.pacman)
@@ -91,6 +97,7 @@ class Game:
         #wipe the last frame
         self.bg.draw(self.screen)
 
+        
         #draw dots first so characters drawn oven them
         for dot in self.pacdots.dots:
             dot_position = to_pixels(dot, self.tile_size)
@@ -107,6 +114,9 @@ class Game:
 
         #finally pacman
         self.pacman.draw(self.screen, self.tile_size)
+
+        #write up-to-date score
+        self.letters.draw_score(self.screen)
 
         #update the screen
         pygame.display.flip()

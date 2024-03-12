@@ -12,11 +12,11 @@ class PacManSprite(PacMan):
     def __init__(self, spritesheet: SpriteSheet) -> None:
         super().__init__()
 
-        self.neutral = spritesheet.image_at(2, 0, 13)
-        self.up = [spritesheet.image_at(1, 2, 13), spritesheet.image_at(0, 2, 13)]
-        self.right = [spritesheet.image_at(1, 0, 13), spritesheet.image_at(0, 0, 13)]
-        self.down = [spritesheet.image_at(1, 3, 13), spritesheet.image_at(0, 3, 13)]
-        self.left = [spritesheet.image_at(1, 1, 13), spritesheet.image_at(0, 1, 13)]
+        self.neutral = spritesheet.image_at(2, 0, 13, 1.8)
+        self.up = [spritesheet.image_at(1, 2, 13, 1.8), spritesheet.image_at(0, 2, 13, 1.8)]
+        self.right = [spritesheet.image_at(1, 0, 13, 1.8), spritesheet.image_at(0, 0, 13, 1.8)]
+        self.down = [spritesheet.image_at(1, 3, 13, 1.8), spritesheet.image_at(0, 3, 13, 1.8)]
+        self.left = [spritesheet.image_at(1, 1, 13, 1.8), spritesheet.image_at(0, 1, 13, 1.8)]
         self.sprite_count = -1
         self.repeat_count = 5
         

@@ -13,14 +13,14 @@ class BlinkySprite(Blinky):
     def __init__(self, pacman: PacMan, spritesheet: SpriteSheet) -> None:
         super().__init__(pacman)
 
-        self.up = [spritesheet.image_at(4, 4, 14), spritesheet.image_at(5, 4, 14)]
-        self.right = [spritesheet.image_at(0, 4, 14), spritesheet.image_at(1, 4, 14)]
-        self.down = [spritesheet.image_at(6, 4, 14), spritesheet.image_at(7, 4, 14)]
-        self.left = [spritesheet.image_at(2, 4, 14), spritesheet.image_at(3, 4, 14)]
-        self.frightened_blue = [spritesheet.image_at(8, 4, 14), spritesheet.image_at(9, 4, 14)]
-        self.frightened_white = [spritesheet.image_at(10, 4, 14), spritesheet.image_at(11, 4, 14)]
-        self.eyes = [spritesheet.image_at(10, 5, 14), spritesheet.image_at(8, 5, 14), 
-                     spritesheet.image_at(11, 5, 14), spritesheet.image_at(9, 5, 14)]
+        self.up = [spritesheet.image_at(4, 4, 14, 1.8), spritesheet.image_at(5, 4, 14, 1.8)]
+        self.right = [spritesheet.image_at(0, 4, 14, 1.8), spritesheet.image_at(1, 4, 14, 1.8)]
+        self.down = [spritesheet.image_at(6, 4, 14, 1.8), spritesheet.image_at(7, 4, 14, 1.8)]
+        self.left = [spritesheet.image_at(2, 4, 14, 1.8), spritesheet.image_at(3, 4, 14, 1.8)]
+        self.frightened_blue = [spritesheet.image_at(8, 4, 14, 1.8), spritesheet.image_at(9, 4, 14, 1.8)]
+        self.frightened_white = [spritesheet.image_at(10, 4, 14, 1.8), spritesheet.image_at(11, 4, 14, 1.8)]
+        self.eyes = [spritesheet.image_at(10, 5, 14, 1.8), spritesheet.image_at(8, 5, 14, 1.8), 
+                     spritesheet.image_at(11, 5, 14, 1.8), spritesheet.image_at(9, 5, 14, 1.8)]
         self.sprite_count = -1
         self.repeat_count = 14
         self.frightened_color_switches = [self.repeat_count * i for i in range(1,10)]
