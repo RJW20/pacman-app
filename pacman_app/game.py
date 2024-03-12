@@ -1,8 +1,9 @@
 import pygame
 
+from pacman_app.background import Background
 from pacman_app import PacDots, Ghosts
 from pacman_app.sprites import SpriteSheet, PacManSprite, BlinkySprite, PinkySprite, InkySprite, ClydeSprite
-from pacman_app.map import MAP, Tile, Direction
+from pacman_app.map import Direction
 from pacman_app.pixels import to_pixels
 
 
@@ -21,6 +22,9 @@ class Game:
         self.screen = pygame.display.set_mode(screen_size)
         pygame.display.set_caption("PacMan")
         self.clock = pygame.time.Clock()
+
+        #background set up
+        self.bg = Background(self.tile_size)
 
         #character set up
         spritesheet = SpriteSheet(self.tile_size)
@@ -83,26 +87,18 @@ class Game:
         """Draw the current frame to the screen."""
 
         #wipe the last frame
-        self.screen.fill('black')
+        self.bg.draw(self.screen)
         self.game.fill('black')
-
-        #draw the map
-        for j, line in enumerate(MAP.grid):
-            for i, tile in enumerate(line):
-                if tile == Tile.WALL:
-                    pixel_point = to_pixels((i,j), self.tile_size)
-                    tile_rect = pygame.Rect((0,0), (self.tile_size, self.tile_size))
-                    tile_rect.center = pixel_point
-                    pygame.draw.rect(self.game, 'blue', tile_rect, 1)
+        self.game.set_colorkey('black')
 
         #draw dots first so characters drawn oven them
         for dot in self.pacdots.dots:
             dot_position = to_pixels(dot, self.tile_size)
-            pygame.draw.circle(self.game, 'yellow', dot_position, self.tile_size*0.15)
+            pygame.draw.circle(self.game, 'pink', dot_position, self.tile_size*0.2)
 
         for dot in self.pacdots.power_dots:
             dot_position = to_pixels(dot, self.tile_size)
-            pygame.draw.circle(self.game, 'yellow', dot_position, self.tile_size*0.3)
+            pygame.draw.circle(self.game, 'pink', dot_position, self.tile_size*0.35)
 
         #ghosts next
         for ghost in self.ghosts:
