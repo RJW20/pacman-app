@@ -83,7 +83,6 @@ class Game:
         elif self.pacdots.remaining == 10:
             self.ghosts.blinky.elroy = 2
 
-
     def update_screen(self) -> None:
         """Draw the current frame to the screen."""
 

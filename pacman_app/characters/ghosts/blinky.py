@@ -1,6 +1,7 @@
 from typing import Literal
 
 from pacman_app.characters.ghosts.ghost import Ghost
+from pacman_app.characters.ghosts.mode import Mode
 from pacman_app.characters.speed import Speed
 
 
@@ -42,7 +43,9 @@ class Blinky(Ghost):
                 self.speed = Speed.GHOST_NORMAL
             case 1:
                 self.speed = Speed.ELROY_1
+                self.mode = Mode.CHASE
             case 2:
                 self.speed = Speed.ELROY_2
+                self.mode = Mode.CHASE
             case _:
                 raise Exception(f"Invalid elroy mode {value}")

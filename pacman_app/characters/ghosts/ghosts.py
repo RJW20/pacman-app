@@ -32,7 +32,7 @@ class Ghosts:
         yield self.clyde
 
     @property
-    def non_elroy_ghosts(self) -> list[Ghost]:
+    def non_elroy(self) -> list[Ghost]:
         """Return a list of pinky, inky and clyde, along with blinky when he 
         isn't in elroy mode."""
 
@@ -67,8 +67,12 @@ class Ghosts:
         self.scatter_chase_max = mode.DURATIONS[self.scatter_chase_index]
         self.scatter_chase_count = 0
 
-        #set all ghosts that aren't returning to home
-        for ghost in self:
+        #set all ghosts that aren't returning to home or in elroy
+        if self.blinky.elroy != 0:
+            if not self.blinky.mode == Mode.RETURN_TO_HOME:
+                self.blinky.reverse_next = True
+
+        for ghost in self.non_elroy:
             if not ghost.mode == Mode.RETURN_TO_HOME:
                 ghost.mode = mode
                 ghost.reverse_next = True
@@ -151,7 +155,8 @@ class Ghosts:
         if self.frightened:
             self.frightened_count += 1
             for ghost in self:
-                ghost.frightened_count -= 1
+                if not ghost.frightened:
+                    ghost.frightened_count -= 1
             if self.frightened_count == FRIGHTENED_DURATION:
                 self.frightened = False
         else:
@@ -159,7 +164,19 @@ class Ghosts:
             if self.scatter_chase_count == self.scatter_chase_max:
                 self.scatter = not self.scatter
 
-        for ghost in self:
+        #handle changes to elroy mode blinky
+        if self.blinky.elroy != 0:
+            if self.blinky.mode == Mode.RETURN_TO_HOME and self.blinky.made_it_home:
+                self.blinky.mode = Mode.CHASE
+                self.blinky.inactive = True
+                self.blinky.inactive_max = INACTIVE_DURATION
+                self.blinky.inactive_count = 0
+                self.blinky.speed = Speed.GHOST_NORMAL
+            elif self.blinky.inactive and self.blinky.inactive_count == self.blinky.inactive_max:
+                self.blinky.inactive = False
+                self.blinky.direction = False
+
+        for ghost in self.non_elroy:
 
             #advance any regenerating ghosts
             if ghost.mode == Mode.RETURN_TO_HOME and ghost.made_it_home:
