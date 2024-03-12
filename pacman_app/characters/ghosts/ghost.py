@@ -32,7 +32,7 @@ class Ghost(Character):
     def home_target(self) -> tuple[int,int]:
         """Return the Ghost's home target as tile coordinate."""
 
-        return (13, 14)
+        return (14, 14)
     
     @property
     def target(self) -> tuple[int,int]:
@@ -56,20 +56,20 @@ class Ghost(Character):
     def on_left_tunnel_entrance(self) -> bool:
         """Return True if entering the tunnel on the left."""
 
-        return self.position.tile_pos == (6, 17) and self.on_new_tile
+        return self.position.tile_pos == (7, 17) and self.on_new_tile
     
     @property
     def on_right_tunnel_entrance(self) -> bool:
         """Return True if entering the tunnel on the right."""
 
-        return self.position.tile_pos == (21, 17) and self.on_new_tile
+        return self.position.tile_pos == (22, 17) and self.on_new_tile
     
     @property
     def in_tunnel(self) -> bool:
         """Return True if in the tunnel."""
 
         return self.position.tile_y == 17 and \
-            (self.position.tile_x < 6  or self.position.tile_x > 21)
+            (self.position.tile_x < 7  or self.position.tile_x > 22)
 
     @property
     def on_new_tile(self) -> bool:
@@ -87,7 +87,7 @@ class Ghost(Character):
         """Get in a state to start the game."""
 
         self.mode = Mode.SCATTER
-        self.position = Position((13, 14), (5, 0))
+        self.position = Position((14, 14), (5, 0))
         self.direction = Direction.LEFT
         self.speed = Speed.GHOST_NORMAL
         self.frightened = False

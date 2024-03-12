@@ -18,7 +18,7 @@ class Inky(Ghost):
     def scatter_target(self) -> tuple[int,int]:
         """The Ghost's corner tile it retreats to during scatter mode."""
 
-        return (27, 35)
+        return (28, 35)
 
     def initialise(self, blinky: Ghost) -> None:
         """Get in a state to start the game."""

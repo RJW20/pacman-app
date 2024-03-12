@@ -22,7 +22,7 @@ class Clyde(Ghost):
     def scatter_target(self) -> tuple[int,int]:
         """The Ghost's corner tile it retreats to during scatter mode."""
 
-        return (0, 35)
+        return (1, 35)
 
     def initialise(self) -> None:
         """Get in a state to start the game."""

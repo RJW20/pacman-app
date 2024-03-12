@@ -15,9 +15,6 @@ class Game:
         #pygame set up
         width = settings['game_width']
         self.tile_size = width // 28
-        self.game_offset = self.tile_size
-        game_size = (self.tile_size * 28, self.tile_size * 36)
-        self.game = pygame.Surface((game_size))
         screen_size = (self.tile_size * 30, self.tile_size * 36)
         self.screen = pygame.display.set_mode(screen_size)
         pygame.display.set_caption("PacMan")
@@ -88,28 +85,25 @@ class Game:
 
         #wipe the last frame
         self.bg.draw(self.screen)
-        self.game.fill('black')
-        self.game.set_colorkey('black')
 
         #draw dots first so characters drawn oven them
         for dot in self.pacdots.dots:
             dot_position = to_pixels(dot, self.tile_size)
-            pygame.draw.circle(self.game, 'pink', dot_position, self.tile_size*0.2)
+            pygame.draw.circle(self.screen, 'pink', dot_position, self.tile_size*0.2)
 
         for dot in self.pacdots.power_dots:
             dot_position = to_pixels(dot, self.tile_size)
-            pygame.draw.circle(self.game, 'pink', dot_position, self.tile_size*0.35)
+            pygame.draw.circle(self.screen, 'pink', dot_position, self.tile_size*0.35)
 
         #ghosts next
         for ghost in self.ghosts:
             if not ghost.inactive:
-                ghost.draw(self.game, self.tile_size)
+                ghost.draw(self.screen, self.tile_size)
 
         #finally pacman
-        self.pacman.draw(self.game, self.tile_size)
+        self.pacman.draw(self.screen, self.tile_size)
 
         #update the screen
-        self.screen.blit(self.game, (self.game_offset, 0))
         pygame.display.flip()
 
     def run(self) -> None:
