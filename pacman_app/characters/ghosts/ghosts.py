@@ -32,6 +32,16 @@ class Ghosts:
         yield self.clyde
 
     @property
+    def non_elroy_ghosts(self) -> list[Ghost]:
+        """Return a list of pinky, inky and clyde, along with blinky when he 
+        isn't in elroy mode."""
+
+        if self.blinky.elroy == 0:
+            return [self.blinky, self.pinky, self.inky, self.clyde]
+        else:
+            return [self.pinky, self.inky, self.clyde]
+
+    @property
     def scatter(self) -> bool:
         """Return True if Ghosts in scatter mode, false if in chase mode.
         

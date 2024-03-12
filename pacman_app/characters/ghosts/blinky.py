@@ -1,4 +1,7 @@
+from typing import Literal
+
 from pacman_app.characters.ghosts.ghost import Ghost
+from pacman_app.characters.speed import Speed
 
 
 class Blinky(Ghost):
@@ -21,3 +24,25 @@ class Blinky(Ghost):
 
         super().initialise()
         self.inactive = False
+        self.elroy = 0
+
+    @property
+    def elroy(self) -> None:
+        return self._elroy
+    
+    @elroy.setter
+    def elroy(self, value: Literal[0,1,2]) -> None:
+        """Set to correct speed if change in elroy stage."""
+
+        self._elroy = value
+
+        match(value):
+            #only set this value at the beginning or restart
+            case 0:
+                self.speed = Speed.GHOST_NORMAL
+            case 1:
+                self.speed = Speed.ELROY_1
+            case 2:
+                self.speed = Speed.ELROY_2
+            case _:
+                raise Exception(f"Invalid elroy mode {value}")

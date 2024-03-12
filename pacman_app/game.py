@@ -61,24 +61,28 @@ class Game:
     def advance(self, move: Direction) -> None:
         """Advance to the next frame."""
 
+        #move characters and check for collisions
         self.ghosts.move()
-        self.pacman.move(move)
-        
+        self.pacman.move(move) 
         self.ghosts.check_collision()
 
+        #update pacdots
         if self.pacdots.check_if_eaten(self.pacman):
             self.pacman.score += 10
-            if self.pacdots.remaining == 214:
-                self.ghosts.inky.inactive = False
-            elif self.pacdots.remaining == 184:
-                self.ghosts.clyde.inactive = False
         elif self.pacdots.check_if_powered(self.pacman):
             self.pacman.score += 50
             self.ghosts.frightened = True
-            if self.pacdots.remaining == 214:
-                self.ghosts.inky.inactive = False
-            elif self.pacdots.remaining == 184:
-                self.ghosts.clyde.inactive = False
+
+        #alter ghosts depending on remaining dots
+        if self.pacdots.remaining == 214:
+            self.ghosts.inky.inactive = False
+        elif self.pacdots.remaining == 184:
+            self.ghosts.clyde.inactive = False
+        elif self.pacdots.remaining == 20:
+            self.ghosts.blinky.elroy = 1
+        elif self.pacdots.remaining == 10:
+            self.ghosts.blinky.elroy = 2
+
 
     def update_screen(self) -> None:
         """Draw the current frame to the screen."""
