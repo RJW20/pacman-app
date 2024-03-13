@@ -28,7 +28,7 @@ class Game:
         #letter/number set up
         spritesheet = SpriteSheet(self.tile_size)
         self.letters = Letters(spritesheet, self.tile_size)
-        self.numbers = Numbers(spritesheet)
+        self.numbers = Numbers(spritesheet, self.tile_size)
 
         #character set up
         self.pacman = PacManSprite(spritesheet)
@@ -116,7 +116,7 @@ class Game:
 
         #write up-to-date score
         self.letters.draw_score(self.screen)
-        self.numbers.draw_score(self.screen, self.tile_size, self.pacman.score)
+        self.numbers.draw_score(self.screen, self.pacman.score)
 
         #update the screen
         pygame.display.flip()

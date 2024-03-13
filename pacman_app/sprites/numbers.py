@@ -11,8 +11,11 @@ from pacman_app.pixels import to_pixels
 class Numbers:
     """Numbers as sprites."""
     
-    def __init__(self, spritesheet: SpriteSheet) -> None:
+    def __init__(self, spritesheet: SpriteSheet, tile_size: int) -> None:
+        self.tile_size = tile_size
         self.zero = spritesheet.image_at(8, 6, 7, 0.9)
+        self.zero_rect = self.zero.get_rect()
+        self.zero_rect.topleft = to_pixels((16, 1), self.tile_size)
         self.one = spritesheet.image_at(9, 6, 7, 0.9)
         self.two = spritesheet.image_at(10, 6, 7, 0.9)
         self.three = spritesheet.image_at(11, 6, 7, 0.9)
@@ -38,12 +41,15 @@ class Numbers:
             case 8: return self.eight
             case 9: return self.nine
         
-    def draw_score(self, surface: pygame.Surface, tile_size: int, score: int) -> None:
+    def draw_score(self, surface: pygame.Surface, score: int) -> None:
         """Draw the score onto the surface."""
 
+        #score always ends in zero
+        surface.blit(self.zero, self.zero_rect)
+
         score = str(score)
-        for i, digit in enumerate(score[::-1]):
+        for i, digit in enumerate(score[-2::-1]):
             num_sprite = self.sprite_from_num(int(digit))
             num_rect = num_sprite.get_rect()
-            num_rect.topleft = to_pixels((16 - i, 1), tile_size)
+            num_rect.topleft = to_pixels((15 - i, 1), self.tile_size)
             surface.blit(num_sprite, num_rect)
