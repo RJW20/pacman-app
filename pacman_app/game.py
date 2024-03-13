@@ -76,32 +76,36 @@ class Game:
         self.ghosts.check_collision()
 
         #update pacdots
+        dots_changed = False
         if self.pacdots.check_if_eaten(self.pacman):
             self.pacman.score += 10
             self.pacman.move_next = False
+            dots_changed = True
         elif self.pacdots.check_if_powered(self.pacman):
             self.pacman.score += 50
             self.pacman.move_next = False
             self.ghosts.frightened = True
+            dots_changed = True
+
+        #alter ghosts depending on remaining dots
+        if dots_changed:
+            if self.pacdots.remaining == 214:
+                self.ghosts.inky.inactive = False
+            elif self.pacdots.remaining == 184:
+                self.ghosts.clyde.inactive = False
+            elif self.pacdots.remaining == self.ghosts.blinky.elroy_first_threshold:
+                self.ghosts.blinky.elroy = 1
+            elif self.pacdots.remaining == self.ghosts.blinky.elroy_second_threshold:
+                self.ghosts.blinky.elroy = 2
+            elif self.pacdots.remaining == self.fruit.first_threshold:
+                self.fruit.available = True
+            elif self.pacdots.remaining == self.fruit.second_threshold:
+                self.fruit.available = True
 
         #update fruit
         if self.fruit.available and self.pacman.collided_with(self.fruit):
             self.pacman.score += 100
             self.fruit.available = False
-
-        #alter ghosts depending on remaining dots
-        if self.pacdots.remaining == 214:
-            self.ghosts.inky.inactive = False
-        elif self.pacdots.remaining == 184:
-            self.ghosts.clyde.inactive = False
-        elif self.pacdots.remaining == self.ghosts.blinky.elroy_first_threshold:
-            self.ghosts.blinky.elroy = 1
-        elif self.pacdots.remaining == self.ghosts.blinky.elroy_second_threshold:
-            self.ghosts.blinky.elroy = 2
-        elif self.pacdots.remaining == self.fruit.first_threshold:
-            self.fruit.available = True
-        elif self.pacdots.remaining == self.fruit.second_threshold:
-            self.fruit.available = True
 
     def update_screen(self) -> None:
         """Draw the current frame to the screen."""
