@@ -97,7 +97,6 @@ class Game:
         #wipe the last frame
         self.bg.draw(self.screen)
 
-        
         #draw dots first so characters drawn oven them
         for dot in self.pacdots.dots:
             dot_position = to_pixels(dot, self.tile_size)
@@ -117,6 +116,7 @@ class Game:
 
         #write up-to-date score
         self.letters.draw_score(self.screen)
+        self.numbers.draw_score(self.screen, self.tile_size, self.pacman.score)
 
         #update the screen
         pygame.display.flip()

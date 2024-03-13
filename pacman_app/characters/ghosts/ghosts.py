@@ -126,6 +126,10 @@ class Ghosts:
             #set pacman's speed
             self.pacman.speed = Speed.PACMAN_NORMAL
 
+    @property
+    def not_frightened_count(self) -> int:
+        """Return the number of Ghosts not in frightend state."""
+        return len([ghost for ghost in self if not ghost.frightened])
 
     def initialise(self) -> None:
         """Get Ghosts in a state to start the game."""
@@ -210,6 +214,7 @@ class Ghosts:
                     ghost.frightened = False
                     ghost.mode = Mode.RETURN_TO_HOME
                     ghost.speed = Speed.GHOST_RETURN
+                    self.pacman.score += 200 * self.not_frightened_count
                 else:
                     #self.pacman.kill()
                     pass            
