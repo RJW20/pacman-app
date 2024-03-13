@@ -2,7 +2,7 @@ import pygame
 
 from pacman_app.background import Background
 from pacman_app import PacDots, Ghosts
-from pacman_app.sprites import SpriteSheet, PacManSprite, BlinkySprite, PinkySprite, InkySprite, ClydeSprite
+from pacman_app.sprites import SpriteSheet, PacManSprite, BlinkySprite, PinkySprite, InkySprite, ClydeSprite, FruitSprite
 from pacman_app.sprites.letters import Letters
 from pacman_app.sprites.numbers import Numbers
 from pacman_app.map import Direction
@@ -27,8 +27,11 @@ class Game:
 
         #letter/number set up
         spritesheet = SpriteSheet(self.tile_size)
-        self.letters = Letters(spritesheet, self.tile_size)
-        self.numbers = Numbers(spritesheet, self.tile_size)
+        self.letters = Letters(spritesheet)
+        self.numbers = Numbers(spritesheet)
+
+        #fruit set up
+        self.fruit = FruitSprite(spritesheet)
 
         #character set up
         self.pacman = PacManSprite(spritesheet)
@@ -69,7 +72,7 @@ class Game:
 
         #move characters and check for collisions
         self.ghosts.move()
-        self.pacman.move(move) 
+        self.pacman.move(move)
         self.ghosts.check_collision()
 
         #update pacdots
@@ -81,15 +84,24 @@ class Game:
             self.pacman.move_next = False
             self.ghosts.frightened = True
 
+        #update fruit
+        if self.fruit.available and self.pacman.collided_with(self.fruit):
+            self.pacman.score += 100
+            self.fruit.available = False
+
         #alter ghosts depending on remaining dots
         if self.pacdots.remaining == 214:
             self.ghosts.inky.inactive = False
         elif self.pacdots.remaining == 184:
             self.ghosts.clyde.inactive = False
-        elif self.pacdots.remaining == 20:
+        elif self.pacdots.remaining == self.ghosts.blinky.elroy_first_threshold:
             self.ghosts.blinky.elroy = 1
-        elif self.pacdots.remaining == 10:
+        elif self.pacdots.remaining == self.ghosts.blinky.elroy_second_threshold:
             self.ghosts.blinky.elroy = 2
+        elif self.pacdots.remaining == self.fruit.first_threshold:
+            self.fruit.available = True
+        elif self.pacdots.remaining == self.ghosts.blinky.elroy_second_threshold:
+            self.fruit.available = True
 
     def update_screen(self) -> None:
         """Draw the current frame to the screen."""
@@ -105,6 +117,10 @@ class Game:
         for dot in self.pacdots.power_dots:
             dot_position = to_pixels(dot, self.tile_size)
             pygame.draw.circle(self.screen, 'pink', dot_position, self.tile_size*0.35)
+
+        #draw fruit
+        if self.fruit.available:
+            self.fruit.draw(self.screen)
 
         #ghosts next
         for ghost in self.ghosts:

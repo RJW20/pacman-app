@@ -1,18 +1,14 @@
 import pygame
 
 from pacman_app.sprites.spritesheet import SpriteSheet
-from pacman_app.map import Position
 from pacman_app.pixels import to_pixels
-
-
-
 
 
 class Numbers:
     """Numbers as sprites."""
     
-    def __init__(self, spritesheet: SpriteSheet, tile_size: int) -> None:
-        self.tile_size = tile_size
+    def __init__(self, spritesheet: SpriteSheet) -> None:
+        self.tile_size = spritesheet.tile_size
         self.zero = spritesheet.image_at(8, 6, 7, 0.9)
         self.zero_rect = self.zero.get_rect()
         self.zero_rect.topleft = to_pixels((16, 1), self.tile_size)
