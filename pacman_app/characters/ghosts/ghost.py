@@ -75,7 +75,7 @@ class Ghost(Character):
         """Get in a state to start the game."""
 
         self.mode = Mode.SCATTER
-        self.position = Position((14, 14), (5, 0))
+        self.position = Position((14, 14), (4, 0))
         self.direction = Direction.LEFT
         self.speed = Speed.GHOST_NORMAL
         self.frightened = False

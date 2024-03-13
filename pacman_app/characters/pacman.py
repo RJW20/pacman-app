@@ -16,7 +16,7 @@ class PacMan(Character):
 
         self.score = 0
         self.move_next = True
-        self.position = Position((14, 26), (5, 0))
+        self.position = Position((14, 26), (4, 0))
         self.direction = Direction.LEFT
         self.speed = Speed.PACMAN_NORMAL
 
