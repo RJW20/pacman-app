@@ -1,5 +1,6 @@
 from pacman_app.characters.character import Character
 from pacman_app.characters.speed import Speed
+from pacman_app.fruit import Fruit
 from pacman_app.map import MAP, Tile, Position, Direction
 
 
@@ -55,14 +56,10 @@ class PacMan(Character):
             if move != self.direction and self.can_move_in_direction(self.direction):
                 super().move()
 
-    def collided_with(self, ghost) -> bool:
-        """Return True if ghost is sufficiently close to PacMan.
-        
-        The original definition is to return True when their centre's are on the same tile.
-        ghost is of type .ghosts.ghost.Ghost but type hint requires cyclical import.
-        """
+    def collided_with(self, other: Character | Fruit) -> bool:
+        """Return True if on the same tile as the other entity."""
 
-        return self.position.tile_pos == ghost.position.tile_pos
+        return self.position.tile_pos == other.position.tile_pos
     
     def kill(self) -> None:
         """Kill PacMan."""
