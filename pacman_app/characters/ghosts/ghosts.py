@@ -178,7 +178,7 @@ class Ghosts:
                 self.blinky.speed = Speed.GHOST_NORMAL
             elif self.blinky.inactive and self.blinky.inactive_count == self.blinky.inactive_max:
                 self.blinky.inactive = False
-                self.blinky.direction = False
+                self.blinky.direction = Direction.LEFT
 
         for ghost in self.non_elroy:
 
