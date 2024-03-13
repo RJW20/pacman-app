@@ -8,6 +8,9 @@ from pacman_app.characters.speed import Speed
 class Blinky(Ghost):
     """Ghost that directly targets PacMan."""
 
+    elroy_first_threshold = 20
+    elroy_second_threshold = 10
+
     @property
     def chase_target(self) -> tuple[int,int]:
         """Return the Ghost's chase target as tile coordinate."""
