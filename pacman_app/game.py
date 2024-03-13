@@ -100,7 +100,7 @@ class Game:
             self.ghosts.blinky.elroy = 2
         elif self.pacdots.remaining == self.fruit.first_threshold:
             self.fruit.available = True
-        elif self.pacdots.remaining == self.ghosts.blinky.elroy_second_threshold:
+        elif self.pacdots.remaining == self.fruit.second_threshold:
             self.fruit.available = True
 
     def update_screen(self) -> None:
