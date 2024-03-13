@@ -214,7 +214,7 @@ class Ghosts:
                     ghost.frightened = False
                     ghost.mode = Mode.RETURN_TO_HOME
                     ghost.speed = Speed.GHOST_RETURN
-                    self.pacman.score += 200 * self.not_frightened_count
+                    self.pacman.score += 200 * 2 ** (self.not_frightened_count - 1)
                 else:
                     #self.pacman.kill()
                     pass            
