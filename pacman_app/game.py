@@ -103,9 +103,13 @@ class Game:
                 self.fruit.available = True
 
         #update fruit
-        if self.fruit.available and self.pacman.collided_with(self.fruit):
-            self.pacman.score += 100
-            self.fruit.available = False
+        if self.fruit.available:
+            if self.pacman.collided_with(self.fruit):
+                self.pacman.score += 100
+                self.fruit.available = False
+            elif self.fruit.available_countdown == 0:
+                self.fruit.available = False
+            self.fruit.available_countdown -= 1
 
     def update_screen(self) -> None:
         """Draw the current frame to the screen."""

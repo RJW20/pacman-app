@@ -7,6 +7,21 @@ class Fruit:
     first_threshold = 174
     second_threshold = 74
     position = Position((14, 20), (4, 0))
+    available_duration = 540
 
     def __init__(self) -> None:
-        self.available: bool = False
+        self._available: bool = False
+        self.available_countdown: int
+
+    @property
+    def available(self) -> bool:
+        """Return True if fruit can be eaten."""
+
+        return self._available
+    
+    @available.setter
+    def available(self, value: bool) -> None:
+
+        self._available = value
+        if value:
+            self.available_countdown = self.available_duration
