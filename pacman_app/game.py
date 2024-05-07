@@ -36,11 +36,11 @@ class Game:
         #character set up
         self.pacman = PacManSprite(spritesheet)
         self.pacdots = PacDots()
-        self.ghosts = Ghosts(self.pacman)
-        self.ghosts.blinky = BlinkySprite(self.pacman, spritesheet)
-        self.ghosts.pinky = PinkySprite(self.pacman, spritesheet)
-        self.ghosts.inky = InkySprite(self.pacman, spritesheet)
-        self.ghosts.clyde = ClydeSprite(self.pacman, spritesheet)
+        blinky = BlinkySprite(self.pacman, spritesheet)
+        pinky = PinkySprite(self.pacman, spritesheet)
+        inky = InkySprite(self.pacman, spritesheet)
+        clyde = ClydeSprite(self.pacman, spritesheet)
+        self.ghosts = Ghosts(self.pacman, blinky, pinky, inky, clyde)
 
         self.pacman.initialise()
         self.ghosts.initialise()

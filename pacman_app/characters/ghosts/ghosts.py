@@ -14,12 +14,12 @@ from pacman_app.map import Direction
 class Ghosts:
     """Contains all 4 Ghosts and controls their modes."""
 
-    def __init__(self, pacman: PacMan) -> None:
+    def __init__(self, pacman: PacMan, blinky: Blinky, pinky: Pinky, inky: Inky, clyde: Clyde) -> None:
         self.pacman: PacMan = pacman
-        self.blinky: Blinky
-        self.pinky: Pinky
-        self.inky: Inky
-        self.clyde: Clyde
+        self.blinky: Blinky = blinky
+        self.pinky: Pinky = pinky
+        self.inky: Inky = inky
+        self.clyde: Clyde = clyde
         self.scatter_chase_index: int
         self.scatter_chase_max: int
         self.scatter_chase_count: int
