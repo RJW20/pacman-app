@@ -216,5 +216,4 @@ class Ghosts:
                     ghost.speed = Speed.GHOST_RETURN
                     self.pacman.score += 200 * 2 ** (self.not_frightened_count - 1)
                 else:
-                    #self.pacman.kill()
-                    pass            
+                    self.pacman.kill()          

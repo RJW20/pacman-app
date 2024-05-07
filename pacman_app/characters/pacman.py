@@ -11,12 +11,14 @@ class PacMan(Character):
         super().__init__()
         self.score: int
         self.move_next: bool
+        self.dead: bool
 
     def initialise(self) -> None:
         """Get in a state to start the game."""
 
         self.score = 0
         self.move_next = True
+        self.dead = False
         self.position = Position((14, 26), (4, 0))
         self.direction = Direction.LEFT
         self.speed = Speed.PACMAN_NORMAL
@@ -63,5 +65,4 @@ class PacMan(Character):
     
     def kill(self) -> None:
         """Kill PacMan."""
-
-        pass
+        self.dead = True
