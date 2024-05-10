@@ -122,5 +122,25 @@ class Position:
         
         return self.tile_y + self.offset_y/self.norm
     
+    def __eq__(self, other: Position) -> bool:
+        """Return True if self and other have the same norm, tile_x, tile_y, offset_x, offset_y."""
+    
+        if self.tile_x != other.tile_x:
+            return False
+        
+        if self.tile_y != other.tile_y:
+            return False
+        
+        if self.offset_x != other.offset_x:
+            return False
+        
+        if self.offset_y != other.offset_y:
+            return False
+        
+        if self.norm != other.norm:
+            return False
+        
+        return True
+
     def __str__(self) -> str:
         return f'({self.tile_x}: {self.offset_x}, {self.tile_y}: {self.offset_y})'
