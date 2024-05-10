@@ -118,15 +118,13 @@ class Game:
         self.bg.draw(self.screen)
 
         #draw dots first so characters drawn oven them
-        for dot_x, dot_ys in self.pacdots.dots.items():
-            for dot_y in dot_ys:
-                dot_position = to_pixels((dot_x, dot_y), self.tile_size)
-                pygame.draw.circle(self.screen, 'pink', dot_position, self.tile_size*0.2)
+        for dot in self.pacdots.dots:
+            dot_position = to_pixels(dot, self.tile_size)
+            pygame.draw.circle(self.screen, 'pink', dot_position, self.tile_size*0.2)
 
-        for dot_x, dot_ys in self.pacdots.power_dots.items():
-            for dot_y in dot_ys:
-                dot_position = to_pixels((dot_x, dot_y), self.tile_size)
-                pygame.draw.circle(self.screen, 'pink', dot_position, self.tile_size*0.35)
+        for dot in self.pacdots.power_dots:
+            dot_position = to_pixels(dot, self.tile_size)
+            pygame.draw.circle(self.screen, 'pink', dot_position, self.tile_size*0.35)
 
         #draw fruit
         if self.fruit.available:
