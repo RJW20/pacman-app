@@ -1,6 +1,4 @@
-from math import isclose
-
-from pacman_app.map import MAP, Tile
+from pacman_app.map import MAP
 from pacman_app import PacMan
 
 
@@ -8,19 +6,25 @@ class PacDots:
     """The dots the PacMan eats."""
 
     def __init__(self) -> None:
-        self.dots: list[tuple[int,int]] = []
-        self.power_dots: list[tuple[int,int]] = []
+        self.dots: dict[int, list[int]] = dict()
+        self.power_dots: dict[int, list[int]] = dict()
         for j, line in enumerate(MAP.grid):
             for i, tile in enumerate(line):
                 if tile.is_dot:
-                    self.dots.append((i,j))
+                    try:
+                        self.dots[i].append(j)
+                    except KeyError:
+                        self.dots[i] = [j]
                 elif tile.is_power_dot:
-                    self.power_dots.append((i,j))
+                    try:
+                        self.power_dots[i].append(j)
+                    except KeyError:
+                        self.power_dots[i] = [j]
 
     @property
     def remaining(self) -> int:
         """Return the number of dots and powered dots left."""
-        return len(self.dots) + len(self.power_dots)
+        return sum(len(value) for value in self.dots.values()) + sum(len(value) for value in self.power_dots.values())
 
     def check_if_eaten(self, pacman: PacMan) -> bool:
         """Return True if pacman is considered to have eaten a pacdot.
@@ -28,9 +32,17 @@ class PacDots:
         Also remove that pacdot from self.dots.
         """
 
-        for dot in self.dots:
-            if pacman.on_new_tile and pacman.position.tile_pos == dot:
-                self.dots.remove(dot)
+        if not pacman.on_new_tile:
+            return False
+
+        try:
+            possible_dots = self.dots[pacman.position.tile_x]
+        except KeyError:
+            return False
+        
+        for dot_y in possible_dots:
+            if pacman.position.tile_y == dot_y:
+                self.dots[pacman.position.tile_x].remove(dot_y)
                 return True
 
         return False 
@@ -41,9 +53,17 @@ class PacDots:
         Also remove that pacdot from self.power_dots.
         """
 
-        for dot in self.power_dots:
-            if pacman.on_new_tile and pacman.position.tile_pos == dot:
-                self.power_dots.remove(dot)
+        if not pacman.on_new_tile:
+            return False
+
+        try:
+            possible_dots = self.power_dots[pacman.position.tile_x]
+        except KeyError:
+            return False
+        
+        for dot_y in possible_dots:
+            if pacman.position.tile_y == dot_y:
+                self.power_dots[pacman.position.tile_x].remove(dot_y)
                 return True
-            
+
         return False 
