@@ -150,7 +150,7 @@ class Game:
 
         pacman_move = self.pacman.direction
 
-        while True:
+        while not self.pacman.dead:
             pacman_move = self.check_move(pacman_move)
             self.advance(pacman_move)
             self.update_screen()
