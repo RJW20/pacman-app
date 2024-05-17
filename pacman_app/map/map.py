@@ -1,7 +1,6 @@
 from functools import cached_property
 
 from pacman_app.map.tile import Tile
-from pacman_app.map.position import Position
 from pacman_app.map.direction import Direction
 
 
